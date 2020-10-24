@@ -1,0 +1,72 @@
+package br.com.suafeira.to.dto;
+
+import java.util.Set;
+
+import br.com.suafeira.to.dto.handler.CustomerHandler;
+
+public class FairDTO {
+	
+	private String siteName;
+	private String description;
+	private String address;
+	private String city;
+	private String uf;
+	private String dayWeek;
+	private Set<CustomerHandler> customers;
+	
+	public FairDTO() {
+		
+	}
+	
+	public FairDTO(String siteName, String description, String address, String city, String uf, String dayWeek) {
+		this.siteName = siteName;
+		this.description = description;
+		this.address = address;
+		this.city = city;
+		this.uf = uf;
+		this.dayWeek = dayWeek;
+	}
+	
+	public String getSiteName() {
+		return siteName;
+	}
+	public void setSiteName(String siteName) {
+		this.siteName = siteName;
+	}
+	public String getDescription() {
+		return description;
+	}
+	public void setDescription(String description) {
+		this.description = description;
+	}
+	public String getAddress() {
+		return address;
+	}
+	public void setAddress(String address) {
+		this.address = address;
+	}
+	public String getCity() {
+		return city;
+	}
+	public void setCity(String city) {
+		this.city = city;
+	}
+	public String getUf() {
+		return uf;
+	}
+	public void setUf(String uf) {
+		this.uf = uf;
+	}
+	public String getDayWeek() {
+		return dayWeek;
+	}
+	public void setDayWeek(String dayWeek) {
+		this.dayWeek = dayWeek;
+	}
+	public Set<CustomerHandler> getCustomers() {
+		return customers;
+	}
+	public void setCustomers(Set<CustomerHandler> customers) {
+		this.customers = customers;
+	}
+}
