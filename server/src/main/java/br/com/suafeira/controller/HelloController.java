@@ -12,7 +12,7 @@ public class HelloController {
 	
 	@GetMapping
 	public ResponseEntity<String> hello() {
-		return new ResponseEntity<String>("Hello", HttpStatus.OK);
+		return new ResponseEntity<String>("Sua Feira API", HttpStatus.OK);
 	}
 
 }
