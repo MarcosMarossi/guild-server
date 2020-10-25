@@ -9,13 +9,13 @@
 		<relativePath /> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>br.com.fair</groupId>
-	<artifactId>fair</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
-	<name>fair</name>
+	<artifactId>suafeira</artifactId>
+	<version>1.0.0</version>
+	<name>suafeira</name>
 	<description>Project for Spring Boot</description>
 
 	<properties>
-		<java.version>13</java.version>
+		<java.version>1.8</java.version>
 	</properties>
 
 	<dependencies>
@@ -75,25 +75,11 @@
 	</dependencies>
 
 	<build>
+		<finalName>suafeira</finalName>
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<configuration>
-					<release>13</release>
-				</configuration>
-			</plugin>
-			<plugin>
-				<groupId>com.heroku.sdk</groupId>
-				<artifactId>heroku-maven-plugin</artifactId>
-				<version>3.0.4</version>
-				<configuration>
-					<appName>apirest-suafeira</appName>
-				</configuration>
 			</plugin>
 		</plugins>
 	</build>

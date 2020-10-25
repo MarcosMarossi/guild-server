@@ -53,7 +53,7 @@ public class CustomerController {
 		try {			
 			String registerPassword = new BCryptPasswordEncoder().encode(register.getCustomerPassword());			
 			
-			if(registerPassword.isEmpty() || registerPassword.isBlank()) {
+			if(registerPassword.isEmpty()) {
 				return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 			}		
 			register.setCustomerPassword(registerPassword);
@@ -184,10 +184,10 @@ public class CustomerController {
 	}
 
 	private boolean isValidNumber(UpdateForm form) {
-		return !form.getWhatsapp().isBlank() || form.getWhatsapp().length() >= 11;
+		return !form.getWhatsapp().isEmpty() || form.getWhatsapp().length() >= 11;
 	}
 
 	private boolean isValidPassword(UpdateForm form) {
-		return !form.getCustomerNewPassword().isBlank() || form.getCustomerNewPassword().length() >= 8;
+		return !form.getCustomerNewPassword().isEmpty() || form.getCustomerNewPassword().length() >= 8;
 	}
 }
