@@ -136,21 +136,32 @@ public class CustomerController {
 		
 	}
 	
-	@DeleteMapping(value = "/delete")
+	@DeleteMapping
 	public ResponseEntity<?> delete(@RequestParam Integer customerId, @RequestParam Integer fairId) {
 		try {
 			Optional<Customer> client = cr.findById(customerId);
-			Customer customer = client.get();
 			
-			Set<Fair> fairs = new TreeSet<Fair>();
-			fairs = customer.getFairs();			
+			if(client.isPresent()) {
+				Customer customer = client.get();
+				
+				Set<Fair> fairs = new TreeSet<Fair>();
+				fairs = customer.getFairs();			
+				
+				Optional<Fair> fair = fr.findById(fairId);
+				
+				if(!fair.isPresent()) {
+					return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+				}
+				
+				fairs.remove(fair.get());
+				
+				customer.setFairs(fairs);		
+				cr.save(customer);			
+				return new ResponseEntity<>(HttpStatus.OK);
+			} else {
+				return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+			}
 			
-			Optional<Fair> fair = fr.findById(fairId);
-			fairs.remove(fair.get());
-			
-			customer.setFairs(fairs);		
-			cr.save(customer);			
-			return new ResponseEntity<>(HttpStatus.OK);
 		} catch (Exception e) {
 			e.printStackTrace();
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
