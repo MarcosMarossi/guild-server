@@ -1,9 +1,12 @@
 package br.com.suafeira.to.dto.handler;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import br.com.suafeira.to.Customer;
+import br.com.suafeira.to.Product;
 
 public class CustomerHandler {
 	
@@ -14,6 +17,7 @@ public class CustomerHandler {
 	
 	public CustomerHandler() {
 	}
+	
 	public String getName() {
 		return name;
 	}
@@ -41,6 +45,7 @@ public class CustomerHandler {
 	
 	public Set<CustomerHandler> convert(Set<Customer> customers) {
 		Set<CustomerHandler> convertObject = new HashSet<CustomerHandler>();
+		
 		for(Customer customer : customers) {
 			CustomerHandler handler = new CustomerHandler();
 			handler.setEmail(customer.getEmail());
@@ -49,14 +54,21 @@ public class CustomerHandler {
 			handler.setListProduct(extractForString(customer));
 			convertObject.add(handler);
 		}		
+		
 		return convertObject;		
 	}
 	
 	private String extractForString(Customer customer) {
 		StringBuilder str = new StringBuilder();
-		customer.getProducts().forEach(product -> {
+		
+		Set<Product> products = customer.getProducts();	
+		
+		List<Product> convertedList = products.stream().collect(Collectors.toList());
+		convertedList.sort((p1, p2) -> p1.getName().compareTo(p2.getName()));
+		
+		convertedList.forEach(product -> {
 			str.append(product.getName() + ", ");
 		});
-		return str.toString().substring (0, str.length() - 2);
+		return str.toString().substring (0, str.length() - 2) + ".";
 	}
 }

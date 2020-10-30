@@ -5,6 +5,8 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -29,6 +31,7 @@ public class FairController {
 	private FairRepository fairRepository;
 	
 	@PostMapping
+	@CacheEvict(value = "findFairIdCustomer", allEntries = true)
 	public ResponseEntity<?> register(@RequestBody FairForm fair) {
 		fairRepository.save(fair.convertToFair());
 		return new ResponseEntity<>(HttpStatus.CREATED); 		
@@ -36,17 +39,24 @@ public class FairController {
 	
 	@GetMapping
 	public ResponseEntity<?> findAll() {
-		return new ResponseEntity<>(fairRepository.findAll(), HttpStatus.OK);
+		List<Fair> fairs = fairRepository.findAll();
+		fairs.sort((f1, f2) -> f1.getSiteName().compareTo(f2.getSiteName()));
+		return new ResponseEntity<>(fairs , HttpStatus.OK);
 	}	
 	
 	@GetMapping(value = "/{id}")
+	@Cacheable(value = "findFairIdCustomer")
 	public ResponseEntity<FairDTO> findFairIdCustomer(@PathVariable Integer id) {
 		if(fairRepository.findById(id).isPresent()) {			
 			Fair fair = fairRepository.findById(id).get();				
 			FairDTO fairResponse = new FairDTO(fair.getSiteName(), fair.getDescription(), fair.getAddress(), fair.getCity(), fair.getUf(), fair.getDayWeek());
-			CustomerHandler ch = new CustomerHandler();
-			Set<CustomerHandler> customers = ch.convert(fair.getCustomers());				
-			fairResponse.setCustomers(customers);			
+			
+			Set<CustomerHandler> customers = new CustomerHandler().convert(fair.getCustomers());		
+			
+			List<CustomerHandler> convertedList = customers.stream().collect(Collectors.toList());
+			convertedList.sort((c1, c2) -> c1.getName().compareTo(c2.getName()));
+			fairResponse.setCustomers(convertedList);	
+			
 			return new ResponseEntity<FairDTO>(fairResponse, HttpStatus.OK);
 		}			
 		return new ResponseEntity<>(HttpStatus.NOT_FOUND);		

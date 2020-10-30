@@ -1,5 +1,6 @@
 package br.com.suafeira.to.dto;
 
+import java.util.List;
 import java.util.Set;
 
 import br.com.suafeira.to.Fair;
@@ -11,9 +12,9 @@ public class CustomerDTO {
 	private String whatsapp;
 	private String email;
 	private Set<Fair> fairs;
-	private Set<Product> products;	
+	private List<Product> products;	
 	
-	public CustomerDTO(String name, String whatsapp, String email, Set<Fair> fairs, Set<Product> products) {
+	public CustomerDTO(String name, String whatsapp, String email, Set<Fair> fairs, List<Product> products) {
 		this.name = name;
 		this.whatsapp = whatsapp;
 		this.email = email;
@@ -44,10 +45,10 @@ public class CustomerDTO {
 	public void setFairs(Set<Fair> fairs) {
 		this.fairs = fairs;
 	}
-	public void setProducts(Set<Product> products) {
+	public void setProducts(List<Product> products) {
 		this.products = products;
 	}
-	public Set<Product> getProducts() {
+	public List<Product> getProducts() {
 		return products;
 	}
 }

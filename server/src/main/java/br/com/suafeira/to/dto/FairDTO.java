@@ -1,6 +1,6 @@
 package br.com.suafeira.to.dto;
 
-import java.util.Set;
+import java.util.List;
 
 import br.com.suafeira.to.dto.handler.CustomerHandler;
 
@@ -12,7 +12,7 @@ public class FairDTO {
 	private String city;
 	private String uf;
 	private String dayWeek;
-	private Set<CustomerHandler> customers;
+	private List<CustomerHandler> customers;
 	
 	public FairDTO() {
 		
@@ -63,10 +63,10 @@ public class FairDTO {
 	public void setDayWeek(String dayWeek) {
 		this.dayWeek = dayWeek;
 	}
-	public Set<CustomerHandler> getCustomers() {
+	public List<CustomerHandler> getCustomers() {
 		return customers;
 	}
-	public void setCustomers(Set<CustomerHandler> customers) {
+	public void setCustomers(List<CustomerHandler> customers) {
 		this.customers = customers;
 	}
 }

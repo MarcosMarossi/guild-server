@@ -1,6 +1,10 @@
 package br.com.suafeira.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -10,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.suafeira.repository.ProductRepository;
+import br.com.suafeira.to.Product;
 import br.com.suafeira.to.form.ProductForm;
 
 @RestController
@@ -20,13 +25,17 @@ public class ProductController {
 	private ProductRepository productRepository;
 	
 	@PostMapping
+	@CacheEvict(value = "findProducts", allEntries = true)
 	public ResponseEntity<?> register(@RequestBody ProductForm productForm) {
 		productRepository.save(productForm.convertToProduct());
 		return new ResponseEntity<>(HttpStatus.CREATED); 		
 	}
 	
 	@GetMapping
+	@Cacheable(value = "findProducts")
 	public ResponseEntity<?> findAll() {
-		return new ResponseEntity<>(productRepository.findAll(), HttpStatus.OK);
+		List<Product> products = productRepository.findAll();
+		products.sort((p1, p2) -> p1.getName().compareTo(p2.getName()));
+		return new ResponseEntity<>(products, HttpStatus.OK);
 	}
 }

@@ -5,10 +5,13 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.TreeSet;
+import java.util.stream.Collectors;
 
 import javax.persistence.EntityNotFoundException;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -92,17 +95,19 @@ public class CustomerController {
 		}
 	}
 	
-	@GetMapping
-	public ResponseEntity<?> findAll() {
-		return new ResponseEntity<>(cr.findAll(), HttpStatus.OK);
-	}
-	
 	@GetMapping(value = "/{id}")
+	@Cacheable(value = "userProfile")
 	public ResponseEntity<CustomerDTO> findFairIdCustomer(@PathVariable(value = "id") Integer id) {		
 		try {			
 			Optional<Customer> client = cr.findById(id);
 			if(client.isPresent()) {
-				CustomerDTO customer = new CustomerDTO(client.get().getName(), client.get().getWhatsapp(), client.get().getEmail(), client.get().getFairs(), client.get().getProducts());
+				Set<Product> products = client.get().getProducts();
+				
+				List<Product> convertedList = products.stream().collect(Collectors.toList());				
+				convertedList.sort((p1, p2) -> p1.getName().compareTo(p2.getName()));
+				
+				CustomerDTO customer = new CustomerDTO(client.get().getName(), client.get().getWhatsapp(), client.get().getEmail(), client.get().getFairs(), convertedList);
+				
 				return new ResponseEntity<CustomerDTO>(customer, HttpStatus.OK);				
 			}
 		
@@ -114,7 +119,8 @@ public class CustomerController {
 	}
 	
 	@PostMapping(value = "/newfair")
-	public ResponseEntity<?> update(@RequestBody CustomerFairForm cfForm) {
+	@CacheEvict(value = "userProfile")
+	public ResponseEntity<?> newFair(@RequestBody CustomerFairForm cfForm) {
 		try {
 			Optional<Customer> client = cr.findById(cfForm.getCustomerId());
 			Customer customer = client.get();
@@ -137,6 +143,7 @@ public class CustomerController {
 	}
 	
 	@DeleteMapping
+	@CacheEvict(value = "userProfile")
 	public ResponseEntity<?> delete(@RequestParam Integer customerId, @RequestParam Integer fairId) {
 		try {
 			Optional<Customer> client = cr.findById(customerId);
@@ -169,6 +176,7 @@ public class CustomerController {
 	}
 	
 	@PatchMapping
+	@CacheEvict(value = "userProfile")
 	public ResponseEntity<?> update(@RequestBody UpdateForm form){
 		try {
 			Optional<Customer> client = cr.findByEmail(form.getEmail());
