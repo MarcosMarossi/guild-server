@@ -5,8 +5,6 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -31,10 +29,9 @@ public class FairController {
 	private FairRepository fairRepository;
 	
 	@PostMapping
-	@CacheEvict(value = "findFairIdCustomer", allEntries = true)
 	public ResponseEntity<?> register(@RequestBody FairForm fair) {
-		fairRepository.save(fair.convertToFair());
-		return new ResponseEntity<>(HttpStatus.CREATED); 		
+		Fair fairReturn = fairRepository.save(fair.convertToFair());
+		return new ResponseEntity<>(fairReturn.getId() , HttpStatus.CREATED); 		
 	}
 	
 	@GetMapping
@@ -45,7 +42,6 @@ public class FairController {
 	}	
 	
 	@GetMapping(value = "/{id}")
-	@Cacheable(value = "findFairIdCustomer")
 	public ResponseEntity<FairDTO> findFairIdCustomer(@PathVariable Integer id) {
 		if(fairRepository.findById(id).isPresent()) {			
 			Fair fair = fairRepository.findById(id).get();				

@@ -12,5 +12,14 @@ public class Main {
 
 	public static void main(String[] args) {
 		SpringApplication.run(Main.class, args);		
-	}
+		
+		while(true) {
+			try {
+				Thread.sleep(600000);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
+	}	
+	
 }

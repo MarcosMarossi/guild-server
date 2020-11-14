@@ -10,8 +10,6 @@ import java.util.stream.Collectors;
 import javax.persistence.EntityNotFoundException;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -96,7 +94,6 @@ public class CustomerController {
 	}
 	
 	@GetMapping(value = "/{id}")
-	@Cacheable(value = "userProfile")
 	public ResponseEntity<CustomerDTO> findFairIdCustomer(@PathVariable(value = "id") Integer id) {		
 		try {			
 			Optional<Customer> client = cr.findById(id);
@@ -119,7 +116,6 @@ public class CustomerController {
 	}
 	
 	@PostMapping(value = "/newfair")
-	@CacheEvict(value = "userProfile")
 	public ResponseEntity<?> newFair(@RequestBody CustomerFairForm cfForm) {
 		try {
 			Optional<Customer> client = cr.findById(cfForm.getCustomerId());
@@ -143,7 +139,6 @@ public class CustomerController {
 	}
 	
 	@DeleteMapping
-	@CacheEvict(value = "userProfile")
 	public ResponseEntity<?> delete(@RequestParam Integer customerId, @RequestParam Integer fairId) {
 		try {
 			Optional<Customer> client = cr.findById(customerId);
@@ -176,7 +171,6 @@ public class CustomerController {
 	}
 	
 	@PatchMapping
-	@CacheEvict(value = "userProfile")
 	public ResponseEntity<?> update(@RequestBody UpdateForm form){
 		try {
 			Optional<Customer> client = cr.findByEmail(form.getEmail());

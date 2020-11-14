@@ -44,11 +44,13 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter{
 	protected void configure(HttpSecurity http) throws Exception {
 		http.authorizeRequests()
 		.antMatchers(HttpMethod.POST, "/customers").permitAll()
+		.antMatchers(HttpMethod.DELETE, "/customers").permitAll()
 		.antMatchers(HttpMethod.GET, "/customers/*").permitAll()
 		.antMatchers(HttpMethod.POST, "/auth").permitAll()
 		.antMatchers(HttpMethod.GET, "/fairs").permitAll()
 		.antMatchers(HttpMethod.POST, "/fairs").permitAll()
 		.antMatchers(HttpMethod.GET, "/fairs/*").permitAll()
+		.antMatchers(HttpMethod.GET, "/fairs/search/*").permitAll()
 		.antMatchers(HttpMethod.POST, "/products").permitAll()
 		.antMatchers(HttpMethod.GET, "/products").permitAll()
 		.anyRequest().authenticated()
