@@ -36,9 +36,9 @@ public class AuthenticationController {
 	@PostMapping
 	public ResponseEntity<?> autenticar( @RequestBody @Valid LoginForm form) {
 		Optional<Customer> customer = customerRepository.findByEmail(form.getEmail());		
-		if(!customer.isPresent()) {
+		
+		if(!customer.isPresent()) 
 			return ResponseEntity.notFound().build();
-		}
 		
 		UsernamePasswordAuthenticationToken dadosLogin = form.converter();
 		

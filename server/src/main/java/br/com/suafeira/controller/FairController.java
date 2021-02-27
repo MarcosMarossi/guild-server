@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import br.com.suafeira.repository.FairRepository;
 import br.com.suafeira.to.Fair;
 import br.com.suafeira.to.dto.FairDTO;
-import br.com.suafeira.to.dto.handler.CustomerHandler;
+import br.com.suafeira.to.dto.handler.CustomerForm;
 import br.com.suafeira.to.form.FairForm;
 
 @RestController
@@ -47,9 +47,9 @@ public class FairController {
 			Fair fair = fairRepository.findById(id).get();				
 			FairDTO fairResponse = new FairDTO(fair.getSiteName(), fair.getDescription(), fair.getAddress(), fair.getCity(), fair.getUf(), fair.getDayWeek());
 			
-			Set<CustomerHandler> customers = new CustomerHandler().convert(fair.getCustomers());		
+			Set<CustomerForm> customers = new CustomerForm().convert(fair.getCustomers());		
 			
-			List<CustomerHandler> convertedList = customers.stream().collect(Collectors.toList());
+			List<CustomerForm> convertedList = customers.stream().collect(Collectors.toList());
 			convertedList.sort((c1, c2) -> c1.getName().compareTo(c2.getName()));
 			fairResponse.setCustomers(convertedList);	
 			

@@ -3,8 +3,8 @@ package br.com.suafeira.to.form;
 import java.util.List;
 
 import br.com.suafeira.to.Customer;
-import br.com.suafeira.to.dto.handler.FairHandler;
-import br.com.suafeira.to.dto.handler.ProductHandler;
+import br.com.suafeira.to.dto.handler.FairForm;
+import br.com.suafeira.to.dto.handler.ProductForm;
 
 public class CustomerForm {
 	
@@ -12,8 +12,8 @@ public class CustomerForm {
 	private String email;	
 	private String whatsapp;
 	private String customerPassword;	
-	private List<ProductHandler> idsProduct;
-	private List<FairHandler> idsFair;
+	private List<ProductForm> idsProduct;
+	private List<FairForm> idsFair;
 	
 	public String getName() {
 		return name;
@@ -39,16 +39,16 @@ public class CustomerForm {
 	public void setCustomerPassword(String customerPassword) {
 		this.customerPassword = customerPassword;
 	}		
-	public List<ProductHandler> getIdsProduct() {
+	public List<ProductForm> getIdsProduct() {
 		return idsProduct;
 	}
-	public void setIdsProduct(List<ProductHandler> idsProduct) {
+	public void setIdsProduct(List<ProductForm> idsProduct) {
 		this.idsProduct = idsProduct;
 	}
-	public List<FairHandler> getIdsFair() {
+	public List<FairForm> getIdsFair() {
 		return idsFair;
 	}
-	public void setIdsFair(List<FairHandler> idsFair) {
+	public void setIdsFair(List<FairForm> idsFair) {
 		this.idsFair = idsFair;
 	}
 	public Customer convertToCustomer() {

@@ -1,6 +1,6 @@
 package br.com.suafeira.to.dto.handler;
 
-public class FairHandler {
+public class FairForm {
 	
 	private Integer idFair;
 

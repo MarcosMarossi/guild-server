@@ -1,6 +1,6 @@
 package br.com.suafeira.to.dto.handler;
 
-public class ProductHandler {
+public class ProductForm {
 
 	private Integer idProduct;
 	

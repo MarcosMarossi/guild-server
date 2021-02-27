@@ -8,14 +8,14 @@ import java.util.stream.Collectors;
 import br.com.suafeira.to.Customer;
 import br.com.suafeira.to.Product;
 
-public class CustomerHandler {
+public class CustomerForm {
 	
 	private String name;
 	private String whatsapp;
 	private String email;
 	private String listProduct;
 	
-	public CustomerHandler() {
+	public CustomerForm() {
 	}
 	
 	public String getName() {
@@ -43,11 +43,11 @@ public class CustomerHandler {
 		this.listProduct = listProduct;
 	}
 	
-	public Set<CustomerHandler> convert(Set<Customer> customers) {
-		Set<CustomerHandler> convertObject = new HashSet<CustomerHandler>();
+	public Set<CustomerForm> convert(Set<Customer> customers) {
+		Set<CustomerForm> convertObject = new HashSet<CustomerForm>();
 		
 		for(Customer customer : customers) {
-			CustomerHandler handler = new CustomerHandler();
+			CustomerForm handler = new CustomerForm();
 			handler.setEmail(customer.getEmail());
 			handler.setName(customer.getName());
 			handler.setWhatsapp(customer.getWhatsapp());
