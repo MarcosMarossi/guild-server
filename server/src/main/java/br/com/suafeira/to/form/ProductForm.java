@@ -1,6 +1,6 @@
 package br.com.suafeira.to.form;
 
-import br.com.suafeira.to.Product;
+import br.com.suafeira.to.ProductTO;
 
 public class ProductForm {
 	
@@ -13,7 +13,7 @@ public class ProductForm {
 		this.name = name;
 	}
 	
-	public Product convertToProduct() {
-		return new Product(name);
+	public ProductTO convertToProduct() {
+		return new ProductTO(name);
 	}
 }

@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.suafeira.repository.FairRepository;
-import br.com.suafeira.to.Fair;
+import br.com.suafeira.to.FairTO;
 import br.com.suafeira.to.dto.FairDTO;
 import br.com.suafeira.to.dto.handler.CustomerForm;
 import br.com.suafeira.to.form.FairForm;
@@ -30,13 +30,13 @@ public class FairController {
 	
 	@PostMapping
 	public ResponseEntity<?> register(@RequestBody FairForm fair) {
-		Fair fairReturn = fairRepository.save(fair.convertToFair());
+		FairTO fairReturn = fairRepository.save(fair.convertToFair());
 		return new ResponseEntity<>(fairReturn.getId() , HttpStatus.CREATED); 		
 	}
 	
 	@GetMapping
 	public ResponseEntity<?> findAll() {
-		List<Fair> fairs = fairRepository.findAll();
+		List<FairTO> fairs = fairRepository.findAll();
 		fairs.sort((f1, f2) -> f1.getSiteName().compareTo(f2.getSiteName()));
 		return new ResponseEntity<>(fairs , HttpStatus.OK);
 	}	
@@ -44,7 +44,7 @@ public class FairController {
 	@GetMapping(value = "/{id}")
 	public ResponseEntity<FairDTO> findFairIdCustomer(@PathVariable Integer id) {
 		if(fairRepository.findById(id).isPresent()) {			
-			Fair fair = fairRepository.findById(id).get();				
+			FairTO fair = fairRepository.findById(id).get();				
 			FairDTO fairResponse = new FairDTO(fair.getSiteName(), fair.getDescription(), fair.getAddress(), fair.getCity(), fair.getUf(), fair.getDayWeek());
 			
 			Set<CustomerForm> customers = new CustomerForm().convert(fair.getCustomers());		
@@ -61,11 +61,11 @@ public class FairController {
 	@GetMapping(value = "/search/")
 	public ResponseEntity<?> search(@RequestParam String parameter) {
 		try {
-		List<Fair> filterListSiteName = fairRepository.findBySiteNameIsContaining(parameter).stream().filter(fair -> fair.getSiteName().contains(parameter)).collect(Collectors.toList());		
+		List<FairTO> filterListSiteName = fairRepository.findBySiteNameIsContaining(parameter).stream().filter(fair -> fair.getSiteName().contains(parameter)).collect(Collectors.toList());		
 		if(!filterListSiteName.isEmpty()) 
 			return new ResponseEntity<>(filterListSiteName, HttpStatus.OK);
 		
-		List<Fair> filterListAddress = fairRepository.findByAddressIsContaining(parameter).stream().filter(fair -> fair.getAddress().contains(parameter)).collect(Collectors.toList());
+		List<FairTO> filterListAddress = fairRepository.findByAddressIsContaining(parameter).stream().filter(fair -> fair.getAddress().contains(parameter)).collect(Collectors.toList());
 		if(!filterListAddress.isEmpty()) 
 			return new ResponseEntity<>(filterListAddress, HttpStatus.OK); 		
 		

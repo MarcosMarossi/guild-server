@@ -26,9 +26,9 @@ import org.springframework.web.bind.annotation.RestController;
 import br.com.suafeira.repository.CustomerRepository;
 import br.com.suafeira.repository.FairRepository;
 import br.com.suafeira.service.CustomerService;
-import br.com.suafeira.to.Customer;
-import br.com.suafeira.to.Fair;
-import br.com.suafeira.to.Product;
+import br.com.suafeira.to.CustomerTO;
+import br.com.suafeira.to.FairTO;
+import br.com.suafeira.to.ProductTO;
 import br.com.suafeira.to.dto.CustomerDTO;
 import br.com.suafeira.to.dto.handler.FairForm;
 import br.com.suafeira.to.form.CustomerFairForm;
@@ -63,11 +63,11 @@ public class CustomerController {
 	@GetMapping(value = "/{id}")
 	public ResponseEntity<CustomerDTO> findFairIdCustomer(@PathVariable(value = "id") Integer id) {		
 		try {			
-			Optional<Customer> client = customerRepository.findById(id);
+			Optional<CustomerTO> client = customerRepository.findById(id);
 			if(client.isPresent()) {
-				Set<Product> products = client.get().getProducts();
+				Set<ProductTO> products = client.get().getProducts();
 				
-				List<Product> convertedList = products.stream().collect(Collectors.toList());				
+				List<ProductTO> convertedList = products.stream().collect(Collectors.toList());				
 				convertedList.sort((p1, p2) -> p1.getName().compareTo(p2.getName()));
 				
 				CustomerDTO customer = new CustomerDTO(client.get().getName(), client.get().getWhatsapp(), client.get().getEmail(), client.get().getFairs(), convertedList);
@@ -85,14 +85,14 @@ public class CustomerController {
 	@PostMapping(value = "/newfair")
 	public ResponseEntity<?> newFair(@RequestBody CustomerFairForm cfForm) {
 		try {
-			Optional<Customer> client = customerRepository.findById(cfForm.getCustomerId());
-			Customer customer = client.get();
+			Optional<CustomerTO> client = customerRepository.findById(cfForm.getCustomerId());
+			CustomerTO customer = client.get();
 			
-			Set<Fair> fairs = new TreeSet<Fair>();
+			Set<FairTO> fairs = new TreeSet<FairTO>();
 			fairs = customer.getFairs();		
 			
 			for(FairForm handler : cfForm.getIdsFair()) {
-				Optional<Fair> fair = fr.findById(handler.getIdFair());
+				Optional<FairTO> fair = fr.findById(handler.getIdFair());
 				fairs.add(fair.get());
 			}		
 			customer.setFairs(fairs);		
@@ -108,15 +108,15 @@ public class CustomerController {
 	@DeleteMapping
 	public ResponseEntity<?> delete(@RequestParam Integer customerId, @RequestParam Integer fairId) {
 		try {
-			Optional<Customer> client = customerRepository.findById(customerId);
+			Optional<CustomerTO> client = customerRepository.findById(customerId);
 			
 			if(client.isPresent()) {
-				Customer customer = client.get();
+				CustomerTO customer = client.get();
 				
-				Set<Fair> fairs = new TreeSet<Fair>();
+				Set<FairTO> fairs = new TreeSet<FairTO>();
 				fairs = customer.getFairs();			
 				
-				Optional<Fair> fair = fr.findById(fairId);
+				Optional<FairTO> fair = fr.findById(fairId);
 				
 				if(!fair.isPresent()) {
 					return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
@@ -140,9 +140,9 @@ public class CustomerController {
 	@PatchMapping
 	public ResponseEntity<?> update(@RequestBody UpdateForm form){
 		try {
-			Optional<Customer> client = customerRepository.findByEmail(form.getEmail());
+			Optional<CustomerTO> client = customerRepository.findByEmail(form.getEmail());
 			if(client.isPresent()) {
-				Customer customer = client.get();
+				CustomerTO customer = client.get();
 				
 				if(isValidNumber(form)) {
 					customer.setWhatsapp(form.getWhatsapp());

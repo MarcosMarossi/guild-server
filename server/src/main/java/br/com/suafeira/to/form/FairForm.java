@@ -1,6 +1,6 @@
 package br.com.suafeira.to.form;
 
-import br.com.suafeira.to.Fair;
+import br.com.suafeira.to.FairTO;
 
 public class FairForm {
 
@@ -61,8 +61,8 @@ public class FairForm {
 	public void setLongitude(Double longitude) {
 		this.longitude = longitude;
 	}
-	public Fair convertToFair() {
-		return new Fair(siteName, description, address, city, uf, dayWeek, latitude, longitude);
+	public FairTO convertToFair() {
+		return new FairTO(siteName, description, address, city, uf, dayWeek, latitude, longitude);
 	}
 	
 	

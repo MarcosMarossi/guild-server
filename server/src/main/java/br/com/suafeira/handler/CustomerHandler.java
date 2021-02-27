@@ -7,16 +7,16 @@ import java.util.Set;
 
 import br.com.suafeira.repository.FairRepository;
 import br.com.suafeira.repository.ProductRepository;
-import br.com.suafeira.to.Fair;
-import br.com.suafeira.to.Product;
+import br.com.suafeira.to.FairTO;
+import br.com.suafeira.to.ProductTO;
 import br.com.suafeira.to.dto.handler.FairForm;
 import br.com.suafeira.to.dto.handler.ProductForm;
 import br.com.suafeira.to.form.CustomerForm;
 
 public class CustomerHandler {
 	
-	public static Set<Fair> getFairs(CustomerForm form, FairRepository repository) {
-		Set<Fair> fairs = new HashSet<Fair>();			
+	public static Set<FairTO> getFairs(CustomerForm form, FairRepository repository) {
+		Set<FairTO> fairs = new HashSet<FairTO>();			
 		List<FairForm> idsFair = form.getIdsFair();	
 		
 		if(idsFair == null || idsFair.isEmpty())
@@ -24,21 +24,21 @@ public class CustomerHandler {
 		
 		
 		idsFair.forEach(model -> {
-			Optional<Fair> fair = repository.findById(model.getIdFair());
+			Optional<FairTO> fair = repository.findById(model.getIdFair());
 			fairs.add(fair.get());	
 		});
 		return fairs;
 	}
 	
-	public static Set<Product> getProducts(CustomerForm form, ProductRepository repository) {
-		Set<Product> products = new HashSet<Product>();			
+	public static Set<ProductTO> getProducts(CustomerForm form, ProductRepository repository) {
+		Set<ProductTO> products = new HashSet<ProductTO>();			
 		List<ProductForm> idsProduct = form.getIdsProduct();
 		
 		if(idsProduct == null || idsProduct.isEmpty())
 		throw new NullPointerException("The fields can't be nullable.");
 		
 		idsProduct.forEach(model -> {
-			Optional<Product> product = repository.findById(model.getIdProduct());
+			Optional<ProductTO> product = repository.findById(model.getIdProduct());
 			products.add(product.get());				
 		});
 		return products;

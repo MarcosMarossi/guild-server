@@ -8,7 +8,7 @@ import br.com.suafeira.handler.CustomerHandler;
 import br.com.suafeira.repository.CustomerRepository;
 import br.com.suafeira.repository.FairRepository;
 import br.com.suafeira.repository.ProductRepository;
-import br.com.suafeira.to.Customer;
+import br.com.suafeira.to.CustomerTO;
 import br.com.suafeira.to.form.CustomerForm;
 
 @Service
@@ -23,20 +23,15 @@ public class CustomerService {
 	@Autowired
 	private ProductRepository productRepository;
 	
-	public void insert(CustomerForm form) {		
-		if(form.getCustomerPassword().isEmpty()) 
-			throw new RuntimeException("");
+	public void insert(CustomerForm form) {				
+		String encryptPassword = new BCryptPasswordEncoder().encode(form.getCustomerPassword());		
+		form.setCustomerPassword(encryptPassword);
 		
-		form.setCustomerPassword(encryptedCaracter(form));
-		Customer customer = form.convertToCustomer();
+		CustomerTO customer = form.convertToCustomer();
+		
 		customer.setProducts(CustomerHandler.getProducts(form, productRepository));
 		customer.setFairs(CustomerHandler.getFairs(form, fairRepository));
 		
 		customerRepository.save(customer);
 	}
-	
-	private String encryptedCaracter(CustomerForm form) {		
-		return new BCryptPasswordEncoder().encode(form.getCustomerPassword());
-	}
-
 }

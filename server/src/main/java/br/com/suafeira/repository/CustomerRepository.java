@@ -5,15 +5,15 @@ import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
 
-import br.com.suafeira.to.Customer;
+import br.com.suafeira.to.CustomerTO;
 
 @Service
-public interface CustomerRepository extends JpaRepository<Customer, Integer> {
+public interface CustomerRepository extends JpaRepository<CustomerTO, Integer> {
 
-	Optional<Customer> findByEmail(String email);
+	Optional<CustomerTO> findByEmail(String email);
 
-	Optional<Customer> findById(Long id);
+	Optional<CustomerTO> findById(Long id);
 	
-	Optional<Customer> findByName(String name);
+	Optional<CustomerTO> findByName(String name);
 
 }

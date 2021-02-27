@@ -2,7 +2,7 @@ package br.com.suafeira.to.form;
 
 import java.util.List;
 
-import br.com.suafeira.to.Customer;
+import br.com.suafeira.to.CustomerTO;
 import br.com.suafeira.to.dto.handler.FairForm;
 import br.com.suafeira.to.dto.handler.ProductForm;
 
@@ -51,7 +51,7 @@ public class CustomerForm {
 	public void setIdsFair(List<FairForm> idsFair) {
 		this.idsFair = idsFair;
 	}
-	public Customer convertToCustomer() {
-		return new Customer(name, whatsapp, email, customerPassword);
+	public CustomerTO convertToCustomer() {
+		return new CustomerTO(name, whatsapp, email, customerPassword);
 	}
 }

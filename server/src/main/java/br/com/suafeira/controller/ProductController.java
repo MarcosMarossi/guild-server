@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.suafeira.repository.ProductRepository;
-import br.com.suafeira.to.Product;
+import br.com.suafeira.to.ProductTO;
 import br.com.suafeira.to.form.ProductForm;
 
 @RestController
@@ -34,7 +34,7 @@ public class ProductController {
 	@GetMapping
 	@Cacheable(value = "findProducts")
 	public ResponseEntity<?> findAll() {
-		List<Product> products = productRepository.findAll();
+		List<ProductTO> products = productRepository.findAll();
 		products.sort((p1, p2) -> p1.getName().compareTo(p2.getName()));
 		return new ResponseEntity<>(products, HttpStatus.OK);
 	}

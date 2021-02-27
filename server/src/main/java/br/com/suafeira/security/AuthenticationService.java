@@ -9,7 +9,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import br.com.suafeira.repository.CustomerRepository;
-import br.com.suafeira.to.Customer;
+import br.com.suafeira.to.CustomerTO;
 
 @Service
 public class AuthenticationService implements UserDetailsService {
@@ -19,7 +19,7 @@ public class AuthenticationService implements UserDetailsService {
 
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-		Optional<Customer> usuario = usuarioRepository.findByEmail(username);
+		Optional<CustomerTO> usuario = usuarioRepository.findByEmail(username);
 		if(usuario.isPresent()) {
 			return usuario.get();
 		}

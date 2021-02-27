@@ -5,8 +5,8 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import br.com.suafeira.to.Customer;
-import br.com.suafeira.to.Product;
+import br.com.suafeira.to.CustomerTO;
+import br.com.suafeira.to.ProductTO;
 
 public class CustomerForm {
 	
@@ -43,10 +43,10 @@ public class CustomerForm {
 		this.listProduct = listProduct;
 	}
 	
-	public Set<CustomerForm> convert(Set<Customer> customers) {
+	public Set<CustomerForm> convert(Set<CustomerTO> customers) {
 		Set<CustomerForm> convertObject = new HashSet<CustomerForm>();
 		
-		for(Customer customer : customers) {
+		for(CustomerTO customer : customers) {
 			CustomerForm handler = new CustomerForm();
 			handler.setEmail(customer.getEmail());
 			handler.setName(customer.getName());
@@ -58,12 +58,12 @@ public class CustomerForm {
 		return convertObject;		
 	}
 	
-	private String extractForString(Customer customer) {
+	private String extractForString(CustomerTO customer) {
 		StringBuilder str = new StringBuilder();
 		
-		Set<Product> products = customer.getProducts();	
+		Set<ProductTO> products = customer.getProducts();	
 		
-		List<Product> convertedList = products.stream().collect(Collectors.toList());
+		List<ProductTO> convertedList = products.stream().collect(Collectors.toList());
 		convertedList.sort((p1, p2) -> p1.getName().compareTo(p2.getName()));
 		
 		convertedList.forEach(product -> {

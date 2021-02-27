@@ -3,18 +3,18 @@ package br.com.suafeira.to.dto;
 import java.util.List;
 import java.util.Set;
 
-import br.com.suafeira.to.Fair;
-import br.com.suafeira.to.Product;
+import br.com.suafeira.to.FairTO;
+import br.com.suafeira.to.ProductTO;
 
 public class CustomerDTO {
 	
 	private String name;
 	private String whatsapp;
 	private String email;
-	private Set<Fair> fairs;
-	private List<Product> products;	
+	private Set<FairTO> fairs;
+	private List<ProductTO> products;	
 	
-	public CustomerDTO(String name, String whatsapp, String email, Set<Fair> fairs, List<Product> products) {
+	public CustomerDTO(String name, String whatsapp, String email, Set<FairTO> fairs, List<ProductTO> products) {
 		this.name = name;
 		this.whatsapp = whatsapp;
 		this.email = email;
@@ -39,16 +39,16 @@ public class CustomerDTO {
 	public void setEmail(String email) {
 		this.email = email;
 	}
-	public Set<Fair> getFairs() {
+	public Set<FairTO> getFairs() {
 		return fairs;
 	}
-	public void setFairs(Set<Fair> fairs) {
+	public void setFairs(Set<FairTO> fairs) {
 		this.fairs = fairs;
 	}
-	public void setProducts(List<Product> products) {
+	public void setProducts(List<ProductTO> products) {
 		this.products = products;
 	}
-	public List<Product> getProducts() {
+	public List<ProductTO> getProducts() {
 		return products;
 	}
 }

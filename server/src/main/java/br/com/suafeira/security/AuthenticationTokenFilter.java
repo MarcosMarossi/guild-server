@@ -12,7 +12,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import br.com.suafeira.repository.CustomerRepository;
-import br.com.suafeira.to.Customer;
+import br.com.suafeira.to.CustomerTO;
 
 public class AuthenticationTokenFilter extends OncePerRequestFilter {
 	
@@ -41,7 +41,7 @@ public class AuthenticationTokenFilter extends OncePerRequestFilter {
 
 	private void autenticarCliente(String token) {
 		Integer idUsuario = tokenService.getIdUsuario(token);
-		Customer usuario = usuarioRepository.findById(idUsuario).get();
+		CustomerTO usuario = usuarioRepository.findById(idUsuario).get();
 		UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(usuario, null, usuario.getAuthorities());
 		SecurityContextHolder.getContext().setAuthentication(authentication);
 		

@@ -8,7 +8,7 @@ import javax.persistence.Id;
 import org.springframework.security.core.GrantedAuthority;
 
 @Entity
-public class Profile implements GrantedAuthority{
+public class ProfileTO implements GrantedAuthority{
 	private static final long serialVersionUID = 1L;
 	
 	@Id @GeneratedValue( strategy = GenerationType.IDENTITY )
@@ -52,7 +52,7 @@ public class Profile implements GrantedAuthority{
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Profile other = (Profile) obj;
+		ProfileTO other = (ProfileTO) obj;
 		if (id == null) {
 			if (other.id != null)
 				return false;

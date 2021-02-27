@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
-import br.com.suafeira.to.Customer;
+import br.com.suafeira.to.CustomerTO;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -21,7 +21,7 @@ public class TokenService {
 	private String secret;
 
 	public String gerarToken(Authentication autentication) {
-		Customer usuario = (Customer) autentication.getPrincipal();
+		CustomerTO usuario = (CustomerTO) autentication.getPrincipal();
 
 		Date hoje = new Date();
 

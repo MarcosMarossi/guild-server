@@ -5,14 +5,14 @@ import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import br.com.suafeira.to.Fair;
+import br.com.suafeira.to.FairTO;
 
-public interface FairRepository extends JpaRepository<Fair, Integer> {
+public interface FairRepository extends JpaRepository<FairTO, Integer> {
 
-	Optional<Fair> findById(Integer id);
+	Optional<FairTO> findById(Integer id);
 	
-	List<Fair> findBySiteNameIsContaining(String siteName);	
+	List<FairTO> findBySiteNameIsContaining(String siteName);	
 	
-	List<Fair> findByAddressIsContaining(String address);
+	List<FairTO> findByAddressIsContaining(String address);
 
 }
