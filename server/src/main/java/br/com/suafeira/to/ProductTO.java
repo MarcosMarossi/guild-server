@@ -38,4 +38,8 @@ public class ProductTO {
 			inverseJoinColumns = @JoinColumn(name = "customer_id", referencedColumnName = "customer_id")
 	)
 	private Set<CustomerTO> customers = new HashSet<CustomerTO>();
+	
+	public ProductTO(String name) {
+		this.name = name;
+	}
 }
