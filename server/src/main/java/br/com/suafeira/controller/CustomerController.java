@@ -44,7 +44,7 @@ public class CustomerController {
 	}
 
 	@GetMapping(value = "/{id}")
-	@Description(value = "")
+	@Description(value = "Get consumer with Product and Fair list.")
 	public ResponseEntity<CustomerDTO> getConsumerByFair(@PathVariable(value = "id") Integer id) {
 		try {
 			Optional<CustomerTO> client = customerRepository.findById(id);
