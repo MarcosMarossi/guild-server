@@ -1,4 +1,4 @@
-package br.com.suafeira.exceptions;
+package br.com.suafeira.controller.advice;
 
 public class ErrorForm {
 	

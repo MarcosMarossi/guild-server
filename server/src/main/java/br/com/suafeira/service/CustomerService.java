@@ -48,7 +48,6 @@ public class CustomerService {
 		List<ProductTO> convertedList = products.stream().collect(Collectors.toList());				
 		convertedList.sort((p1, p2) -> p1.getName().compareTo(p2.getName()));
 		
-		CustomerDTO customer = new CustomerDTO(client.get().getName(), client.get().getWhatsapp(), client.get().getEmail(), client.get().getFairs(), convertedList);
-		return customer;
+		return new CustomerDTO(client.get().getName(), client.get().getWhatsapp(), client.get().getEmail(), client.get().getFairs(), convertedList);
 	}
 }

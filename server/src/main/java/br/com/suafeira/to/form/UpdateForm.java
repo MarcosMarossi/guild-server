@@ -24,4 +24,12 @@ public class UpdateForm {
 	public void setEmail(String email) {
 		this.email = email;
 	}	
+	
+	public boolean isValidWhatsApp() {
+		return !this.getWhatsapp().isEmpty() || this.getWhatsapp().length() >= 11;
+	}
+
+	public boolean isValidPassword() {
+		return !this.getCustomerNewPassword().isEmpty() || this.getCustomerNewPassword().length() >= 8;
+	}
 }

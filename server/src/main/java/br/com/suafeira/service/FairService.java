@@ -10,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import br.com.suafeira.exceptions.CustomerException;
+import br.com.suafeira.exceptions.EntityNotFoundException;
 import br.com.suafeira.repository.CustomerRepository;
 import br.com.suafeira.repository.FairRepository;
 import br.com.suafeira.to.CustomerTO;
@@ -79,7 +81,7 @@ public class FairService {
 		Optional<FairTO> fair = fairRepository.findById(fairId);
 
 		if (!fair.isPresent()) {
-			throw new RuntimeException();
+			throw new EntityNotFoundException("Faid Id " + fairId + " not found.");
 		}
 
 		fairs.remove(fair.get());
@@ -91,24 +93,21 @@ public class FairService {
 	public void updateFair(UpdateForm form, Optional<CustomerTO> client) {
 		CustomerTO customer = client.get();
 
-		if (isValidNumber(form)) {
-			customer.setWhatsapp(form.getWhatsapp());
+		if (!form.isValidWhatsApp()) {
+			throw new CustomerException("The WhatsApp informed is invalid!");
 		}
 
-		if (isValidPassword(form)) {
-			String registerPassword = new BCryptPasswordEncoder().encode(form.getCustomerNewPassword());
-			customer.setCustomerPassword(registerPassword);
+		if (!form.isValidPassword()) {
+			throw new CustomerException("The password informed is invalid!");
 		}
+		
+		customer.setWhatsapp(form.getWhatsapp());
+		String registerPassword = new BCryptPasswordEncoder().encode(form.getCustomerNewPassword());
+		customer.setCustomerPassword(registerPassword);
 
 		customerRepository.save(customer);
 	}
 	
-	private boolean isValidNumber(UpdateForm form) {
-		return !form.getWhatsapp().isEmpty() || form.getWhatsapp().length() >= 11;
-	}
-
-	private boolean isValidPassword(UpdateForm form) {
-		return !form.getCustomerNewPassword().isEmpty() || form.getCustomerNewPassword().length() >= 8;
-	}
+	
 
 }

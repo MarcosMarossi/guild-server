@@ -79,7 +79,7 @@ public class FairController {
 		return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 	}
 
-	@PostMapping(value = "/newfair")
+	@PostMapping(value = "/insert")
 	@Description(value = "")
 	public ResponseEntity<?> newFair(@RequestBody CustomerFairForm cfForm) {
 		try {
@@ -91,7 +91,7 @@ public class FairController {
 		}
 	}
 
-	@DeleteMapping
+	@DeleteMapping(value = "/delete")
 	public ResponseEntity<?> removeFair(@RequestParam Integer customerId, @RequestParam Integer fairId) {
 		try {
 			Optional<CustomerTO> client = customerRepository.findById(customerId);
@@ -107,7 +107,7 @@ public class FairController {
 		}
 	}
 
-	@PatchMapping
+	@PatchMapping(value = "/update")
 	public ResponseEntity<?> update(@RequestBody UpdateForm form) {
 		try {
 			Optional<CustomerTO> client = customerRepository.findByEmail(form.getEmail());
