@@ -24,7 +24,6 @@ import br.com.suafeira.to.form.UpdateForm;
 @Service
 public class FairService {
 
-
 	@Autowired
 	private FairRepository fairRepository;
 	
@@ -107,7 +106,4 @@ public class FairService {
 
 		customerRepository.save(customer);
 	}
-	
-	
-
 }
