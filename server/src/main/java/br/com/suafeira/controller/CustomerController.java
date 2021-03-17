@@ -31,7 +31,7 @@ public class CustomerController {
 	@Autowired
 	private CustomerService service;
 
-	@PostMapping
+	@PostMapping(value = "/insert")
 	@Description(value = "Register new users with a some products and fairs.")
 	public ResponseEntity<?> register(@RequestBody CustomerForm form) {
 		try {

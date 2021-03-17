@@ -24,7 +24,7 @@ public class ProductController {
 	@Autowired
 	private ProductRepository productRepository;
 	
-	@PostMapping
+	@PostMapping(value = "insert")
 	@CacheEvict(value = "findProducts", allEntries = true)
 	public ResponseEntity<?> register(@RequestBody ProductForm productForm) {
 		productRepository.save(productForm.convertToProduct());
