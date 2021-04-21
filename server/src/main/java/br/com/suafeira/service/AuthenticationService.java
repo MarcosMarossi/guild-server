@@ -15,14 +15,14 @@ import br.com.suafeira.to.CustomerTO;
 public class AuthenticationService implements UserDetailsService {
 	
 	@Autowired
-	private CustomerRepository usuarioRepository;	
+	private CustomerRepository customerRepository;	
 
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-		Optional<CustomerTO> usuario = usuarioRepository.findByEmail(username);
+		Optional<CustomerTO> usuario = customerRepository.findByEmail(username);
 		if(usuario.isPresent()) {
 			return usuario.get();
 		}
-		throw new UsernameNotFoundException("Dados inválidos!");
+		throw new UsernameNotFoundException("Invalid data.");
 	}
 }
