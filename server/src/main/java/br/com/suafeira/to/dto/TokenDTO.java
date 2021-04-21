@@ -1,38 +1,17 @@
 package br.com.suafeira.to.dto;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+@Getter @Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class TokenDTO {
 	
-	private Integer id;
-	private String tipo;
 	private String token;
+	private String tipo;
+	private Integer id;
 	
-	public TokenDTO(String token, String tipo, Integer id) {
-		this.token = token;
-		this.tipo = tipo;
-		this.id = id;
-	}
-
-	public Integer getId() {
-		return id;
-	}
-
-	public void setId(Integer id) {
-		this.id = id;
-	}
-
-	public String getTipo() {
-		return tipo;
-	}
-
-	public void setTipo(String tipo) {
-		this.tipo = tipo;
-	}
-
-	public String getToken() {
-		return token;
-	}
-
-	public void setToken(String token) {
-		this.token = token;
-	}
 }

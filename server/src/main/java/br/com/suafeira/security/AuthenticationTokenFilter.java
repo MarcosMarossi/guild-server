@@ -12,6 +12,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import br.com.suafeira.repository.CustomerRepository;
+import br.com.suafeira.service.TokenService;
 import br.com.suafeira.to.CustomerTO;
 
 public class AuthenticationTokenFilter extends OncePerRequestFilter {

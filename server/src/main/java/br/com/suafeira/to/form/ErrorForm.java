@@ -1,4 +1,4 @@
-package br.com.suafeira.exceptions;
+package br.com.suafeira.to.form;
 
 public class ErrorForm {
 	

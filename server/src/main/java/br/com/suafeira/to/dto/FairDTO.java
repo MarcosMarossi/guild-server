@@ -2,8 +2,13 @@ package br.com.suafeira.to.dto;
 
 import java.util.List;
 
-import br.com.suafeira.to.dto.handler.CustomerForm;
+import br.com.suafeira.to.form.CustomerForm;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
+@Getter @Setter
+@NoArgsConstructor
 public class FairDTO {
 	
 	private String siteName;
@@ -14,10 +19,6 @@ public class FairDTO {
 	private String dayWeek;
 	private List<CustomerForm> customers;
 	
-	public FairDTO() {
-		
-	}
-	
 	public FairDTO(String siteName, String description, String address, String city, String uf, String dayWeek) {
 		this.siteName = siteName;
 		this.description = description;
@@ -25,48 +26,5 @@ public class FairDTO {
 		this.city = city;
 		this.uf = uf;
 		this.dayWeek = dayWeek;
-	}
-	
-	public String getSiteName() {
-		return siteName;
-	}
-	public void setSiteName(String siteName) {
-		this.siteName = siteName;
-	}
-	public String getDescription() {
-		return description;
-	}
-	public void setDescription(String description) {
-		this.description = description;
-	}
-	public String getAddress() {
-		return address;
-	}
-	public void setAddress(String address) {
-		this.address = address;
-	}
-	public String getCity() {
-		return city;
-	}
-	public void setCity(String city) {
-		this.city = city;
-	}
-	public String getUf() {
-		return uf;
-	}
-	public void setUf(String uf) {
-		this.uf = uf;
-	}
-	public String getDayWeek() {
-		return dayWeek;
-	}
-	public void setDayWeek(String dayWeek) {
-		this.dayWeek = dayWeek;
-	}
-	public List<CustomerForm> getCustomers() {
-		return customers;
-	}
-	public void setCustomers(List<CustomerForm> customers) {
-		this.customers = customers;
-	}
+	}	
 }

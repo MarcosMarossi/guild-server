@@ -1,4 +1,4 @@
-package br.com.suafeira.exceptions;
+package br.com.suafeira.controller.advice;
 
 import java.time.Instant;
 import java.util.ArrayList;
@@ -17,6 +17,8 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+
+import br.com.suafeira.to.form.ErrorForm;
 
 @RestControllerAdvice
 public class ControllerAdvice {

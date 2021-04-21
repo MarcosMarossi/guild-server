@@ -1,27 +1,22 @@
 package br.com.suafeira.to.form;
 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+@Getter @Setter
+@NoArgsConstructor
 public class UpdateForm {
 	
 	private String whatsapp;
 	private String email;
-	private String customerNewPassword;
+	private String customerNewPassword;	
 	
-	public String getWhatsapp() {
-		return whatsapp;
+	public boolean isValidWhatsApp() {
+		return !this.getWhatsapp().isEmpty() || this.getWhatsapp().length() >= 11;
 	}
-	public void setWhatsapp(String whatsapp) {
-		this.whatsapp = whatsapp;
+
+	public boolean isValidPassword() {
+		return !this.getCustomerNewPassword().isEmpty() || this.getCustomerNewPassword().length() >= 8;
 	}
-	public String getCustomerNewPassword() {
-		return customerNewPassword;
-	}
-	public void setCustomerNewPassword(String customerNewPassword) {
-		this.customerNewPassword = customerNewPassword;
-	}
-	public String getEmail() {
-		return email;
-	}
-	public void setEmail(String email) {
-		this.email = email;
-	}	
 }
