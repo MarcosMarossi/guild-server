@@ -9,9 +9,9 @@ import br.com.suafeira.repository.FairRepository;
 import br.com.suafeira.repository.ProductRepository;
 import br.com.suafeira.to.FairTO;
 import br.com.suafeira.to.ProductTO;
-import br.com.suafeira.to.dto.handler.FairForm;
-import br.com.suafeira.to.dto.handler.ProductForm;
 import br.com.suafeira.to.form.CustomerForm;
+import br.com.suafeira.to.form.FairForm;
+import br.com.suafeira.to.form.ProductForm;
 
 public class CustomerHandler {
 	

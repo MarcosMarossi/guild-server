@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.suafeira.repository.CustomerRepository;
-import br.com.suafeira.security.TokenService;
+import br.com.suafeira.service.TokenService;
 import br.com.suafeira.to.CustomerTO;
 import br.com.suafeira.to.dto.TokenDTO;
 import br.com.suafeira.to.form.LoginForm;

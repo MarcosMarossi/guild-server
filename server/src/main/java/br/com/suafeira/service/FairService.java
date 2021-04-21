@@ -17,8 +17,9 @@ import br.com.suafeira.repository.FairRepository;
 import br.com.suafeira.to.CustomerTO;
 import br.com.suafeira.to.FairTO;
 import br.com.suafeira.to.dto.FairDTO;
-import br.com.suafeira.to.dto.handler.CustomerForm;
 import br.com.suafeira.to.form.CustomerFairForm;
+import br.com.suafeira.to.form.CustomerForm;
+import br.com.suafeira.to.form.FairForm;
 import br.com.suafeira.to.form.UpdateForm;
 
 @Service
@@ -63,7 +64,7 @@ public class FairService {
 		Set<FairTO> fairs = new TreeSet<FairTO>();
 		fairs = customer.getFairs();
 
-		for (br.com.suafeira.to.dto.handler.FairForm handler : cfForm.getIdsFair()) {
+		for (FairForm handler : cfForm.getIdsFair()) {
 			Optional<FairTO> fair = fairRepository.findById(handler.getIdFair());
 			fairs.add(fair.get());
 		}
