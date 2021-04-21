@@ -17,8 +17,8 @@ import org.springframework.web.bind.annotation.RestController;
 import br.com.suafeira.repository.CustomerRepository;
 import br.com.suafeira.service.TokenService;
 import br.com.suafeira.to.CustomerTO;
+import br.com.suafeira.to.LoginTO;
 import br.com.suafeira.to.dto.TokenDTO;
-import br.com.suafeira.to.form.LoginForm;
 
 @RestController 
 @RequestMapping (value = "/auth")
@@ -34,7 +34,7 @@ public class AuthenticationController {
 	private CustomerRepository customerRepository;
 	
 	@PostMapping
-	public ResponseEntity<?> autenticar( @RequestBody @Valid LoginForm form) {
+	public ResponseEntity<?> autenticar( @RequestBody @Valid LoginTO form) {
 		Optional<CustomerTO> customer = customerRepository.findByEmail(form.getEmail());		
 		
 		if(!customer.isPresent()) 

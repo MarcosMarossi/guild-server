@@ -1,4 +1,4 @@
-package br.com.suafeira.to.form;
+package br.com.suafeira.to;
 
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 
@@ -8,8 +8,8 @@ import lombok.Setter;
 
 @Getter @Setter
 @NoArgsConstructor
-public class LoginForm {
-
+public class LoginTO {
+	
 	private String email;
 	private String customerPassword;
 
