@@ -42,7 +42,7 @@ public class CustomerService {
 		customerRepository.save(customer);
 	}
 	
-	public CustomerDTO getConsumer(Optional<CustomerTO> client) {
+	public CustomerDTO getCustomer(Optional<CustomerTO> client) {
 		Set<ProductTO> products = client.get().getProducts();
 		
 		List<ProductTO> convertedList = products.stream().collect(Collectors.toList());				
@@ -51,5 +51,13 @@ public class CustomerService {
 		return new CustomerDTO(client.get().getName(), client.get().getWhatsapp(), 
 				client.get().getEmail(), client.get().getFairs(), convertedList
 		);
+	}
+	
+	public Optional<CustomerTO> findById(Integer id) {
+		return customerRepository.findById(id);
+	}
+
+	public Optional<CustomerTO> findByEmail(String email) {
+		return customerRepository.findByEmail(email);
 	}
 }

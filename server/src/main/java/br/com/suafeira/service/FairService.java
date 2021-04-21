@@ -106,4 +106,16 @@ public class FairService {
 
 		customerRepository.save(customer);
 	}
+	
+	public FairTO save(FairTO fair) {
+		return fairRepository.save(fair);
+	}
+	
+	public Optional<FairTO> findById(Integer id) {
+		return fairRepository.findById(id);
+	}
+	
+	public List<FairTO> findAll() {
+		return fairRepository.findAll();
+	}
 }

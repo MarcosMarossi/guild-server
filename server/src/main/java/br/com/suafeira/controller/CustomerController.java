@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.com.suafeira.repository.CustomerRepository;
 import br.com.suafeira.service.CustomerService;
 import br.com.suafeira.to.CustomerTO;
 import br.com.suafeira.to.dto.CustomerDTO;
@@ -26,16 +25,13 @@ import br.com.suafeira.to.form.CustomerForm;
 public class CustomerController {
 
 	@Autowired
-	private CustomerRepository customerRepository;
-
-	@Autowired
-	private CustomerService service;
+	private CustomerService customerService;
 
 	@PostMapping(value = "/insert")
 	@Description(value = "Register new users with a some products and fairs.")
 	public ResponseEntity<?> register(@RequestBody CustomerForm form) {
 		try {
-			service.insert(form);
+			customerService.insert(form);
 			return new ResponseEntity<>(HttpStatus.CREATED);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -47,9 +43,9 @@ public class CustomerController {
 	@Description(value = "Get consumer with Product and Fair list.")
 	public ResponseEntity<CustomerDTO> getConsumerByFair(@PathVariable(value = "id") Integer id) {
 		try {
-			Optional<CustomerTO> client = customerRepository.findById(id);
+			Optional<CustomerTO> client = customerService.findById(id);
 			if (client.isPresent()) {
-				CustomerDTO customer = service.getConsumer(client);
+				CustomerDTO customer = customerService.getCustomer(client);
 				return new ResponseEntity<CustomerDTO>(customer, HttpStatus.OK);
 			}
 			throw new EntityNotFoundException("It not found with Id= " + id);

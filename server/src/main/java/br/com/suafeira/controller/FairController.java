@@ -17,8 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.com.suafeira.repository.CustomerRepository;
-import br.com.suafeira.repository.FairRepository;
+import br.com.suafeira.service.CustomerService;
 import br.com.suafeira.service.FairService;
 import br.com.suafeira.to.CustomerTO;
 import br.com.suafeira.to.FairTO;
@@ -32,31 +31,28 @@ import br.com.suafeira.to.form.UpdateForm;
 public class FairController {
 
 	@Autowired
-	private FairRepository fairRepository;
+	private CustomerService customerService;
 
 	@Autowired
-	private CustomerRepository customerRepository;
-
-	@Autowired
-	private FairService service;
+	private FairService fairService;
 
 	@PostMapping
 	public ResponseEntity<?> register(@RequestBody FairForm fair) {
-		FairTO fairReturn = fairRepository.save(fair.convertToFair());
+		FairTO fairReturn = fairService.save(fair.convertToFair());
 		return new ResponseEntity<>(fairReturn.getId(), HttpStatus.CREATED);
 	}
 
 	@GetMapping
 	public ResponseEntity<?> findAll() {
-		List<FairTO> fairs = fairRepository.findAll();
+		List<FairTO> fairs = fairService.findAll();
 		fairs.sort((f1, f2) -> f1.getSiteName().compareTo(f2.getSiteName()));
 		return new ResponseEntity<>(fairs, HttpStatus.OK);
 	}
 
 	@GetMapping(value = "/{id}")
 	public ResponseEntity<FairDTO> findFairIdCustomer(@PathVariable Integer id) {
-		if (fairRepository.findById(id).isPresent()) {
-			FairDTO fairResponse = service.findFairByIdConsumer(id);
+		if (fairService.findById(id).isPresent()) {
+			FairDTO fairResponse = fairService.findFairByIdConsumer(id);
 			return new ResponseEntity<FairDTO>(fairResponse, HttpStatus.OK);
 		}
 		return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -65,11 +61,11 @@ public class FairController {
 	@GetMapping(value = "/search/")
 	public ResponseEntity<?> search(@RequestParam String parameter) {
 		try {
-			List<FairTO> filterListSiteName = service.findBySiteName(parameter);
+			List<FairTO> filterListSiteName = fairService.findBySiteName(parameter);
 			if (!filterListSiteName.isEmpty())
 				return new ResponseEntity<>(filterListSiteName, HttpStatus.OK);
 
-			List<FairTO> filterListAddress = service.findByAddress(parameter);
+			List<FairTO> filterListAddress = fairService.findByAddress(parameter);
 			if (!filterListAddress.isEmpty())
 				return new ResponseEntity<>(filterListAddress, HttpStatus.OK);
 
@@ -83,7 +79,7 @@ public class FairController {
 	@Description(value = "")
 	public ResponseEntity<?> newFair(@RequestBody CustomerFairForm cfForm) {
 		try {
-			service.saveFair(cfForm);
+			fairService.saveFair(cfForm);
 			return new ResponseEntity<>(HttpStatus.CREATED);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -94,9 +90,9 @@ public class FairController {
 	@DeleteMapping(value = "/delete")
 	public ResponseEntity<?> removeFair(@RequestParam Integer customerId, @RequestParam Integer fairId) {
 		try {
-			Optional<CustomerTO> client = customerRepository.findById(customerId);
+			Optional<CustomerTO> client = customerService.findById(customerId);
 			if (client.isPresent()) {
-				service.deleteFair(fairId, client);
+				fairService.deleteFair(fairId, client);
 				return new ResponseEntity<>(HttpStatus.OK);
 			} else {
 				return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
@@ -110,9 +106,9 @@ public class FairController {
 	@PatchMapping(value = "/update")
 	public ResponseEntity<?> update(@RequestBody UpdateForm form) {
 		try {
-			Optional<CustomerTO> client = customerRepository.findByEmail(form.getEmail());
+			Optional<CustomerTO> client = customerService.findByEmail(form.getEmail());
 			if (client.isPresent()) {
-				service.updateFair(form, client);
+				fairService.updateFair(form, client);
 				return new ResponseEntity<>(HttpStatus.OK);
 			}
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
