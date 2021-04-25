@@ -41,6 +41,7 @@ public class CustomerHandler {
 			Optional<ProductTO> product = repository.findById(model.getIdProduct());
 			products.add(product.get());				
 		});
+
 		return products;
 	}
 

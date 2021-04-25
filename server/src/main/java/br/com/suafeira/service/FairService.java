@@ -18,7 +18,7 @@ import br.com.suafeira.to.CustomerTO;
 import br.com.suafeira.to.FairTO;
 import br.com.suafeira.to.dto.FairDTO;
 import br.com.suafeira.to.form.CustomerFairForm;
-import br.com.suafeira.to.form.CustomerForm;
+import br.com.suafeira.to.form.CustomerProductForm;
 import br.com.suafeira.to.form.FairForm;
 import br.com.suafeira.to.form.UpdateForm;
 
@@ -35,11 +35,12 @@ public class FairService {
 		FairTO fair = fairRepository.findById(id).get();				
 		FairDTO fairResponse = new FairDTO(fair.getSiteName(), fair.getDescription(), fair.getAddress(), fair.getCity(), fair.getUf(), fair.getDayWeek());
 		
-		Set<CustomerForm> customers = new CustomerForm().convert(fair.getCustomers());		
+		Set<CustomerProductForm> customers = new CustomerProductForm().convert(fair.getCustomers());		
 		
-		List<CustomerForm> convertedList = customers.stream().collect(Collectors.toList());
+		List<CustomerProductForm> convertedList = customers.stream().collect(Collectors.toList());
 		convertedList.sort((c1, c2) -> c1.getName().compareTo(c2.getName()));
 		fairResponse.setCustomers(convertedList);
+
 		return fairResponse;
 	}	
 	

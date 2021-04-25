@@ -2,7 +2,7 @@ package br.com.suafeira.to.dto;
 
 import java.util.List;
 
-import br.com.suafeira.to.form.CustomerForm;
+import br.com.suafeira.to.form.CustomerProductForm;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -17,7 +17,7 @@ public class FairDTO {
 	private String city;
 	private String uf;
 	private String dayWeek;
-	private List<CustomerForm> customers;
+	private List<CustomerProductForm> customers;
 	
 	public FairDTO(String siteName, String description, String address, String city, String uf, String dayWeek) {
 		this.siteName = siteName;
