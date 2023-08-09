@@ -45,7 +45,8 @@ public class FairController {
 	public ResponseEntity<FairDTO> findFairIdCustomer(@PathVariable Integer id) {
 		if(fairRepository.findById(id).isPresent()) {			
 			Fair fair = fairRepository.findById(id).get();				
-			FairDTO fairResponse = new FairDTO(fair.getSiteName(), fair.getDescription(), fair.getAddress(), fair.getCity(), fair.getUf(), fair.getDayWeek());
+			FairDTO fairResponse = new FairDTO(fair.getSiteName(), fair.getDescription(), fair.getAddress(),
+					fair.getCity(), fair.getUf(), fair.getDayWeek(), fair.getLatitude(), fair.getLongitude());
 			
 			Set<CustomerHandler> customers = new CustomerHandler().convert(fair.getCustomers());		
 			

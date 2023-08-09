@@ -12,19 +12,23 @@ public class FairDTO {
 	private String city;
 	private String uf;
 	private String dayWeek;
+	private Double latitude;
+	private Double longitude;
 	private List<CustomerHandler> customers;
 	
 	public FairDTO() {
 		
 	}
 	
-	public FairDTO(String siteName, String description, String address, String city, String uf, String dayWeek) {
+	public FairDTO(String siteName, String description, String address, String city, String uf, String dayWeek, Double latitude, Double longitude) {
 		this.siteName = siteName;
 		this.description = description;
 		this.address = address;
 		this.city = city;
 		this.uf = uf;
 		this.dayWeek = dayWeek;
+		this.latitude = latitude;
+		this.longitude = longitude;
 	}
 	
 	public String getSiteName() {
@@ -68,5 +72,17 @@ public class FairDTO {
 	}
 	public void setCustomers(List<CustomerHandler> customers) {
 		this.customers = customers;
+	}
+	public Double getLatitude() {
+		return latitude;
+	}
+	public void setLatitude(Double latitude) {
+		this.latitude = latitude;
+	}
+	public Double getLongitude() {
+		return longitude;
+	}
+	public void setLongitude(Double longitude) {
+		this.longitude = longitude;
 	}
 }

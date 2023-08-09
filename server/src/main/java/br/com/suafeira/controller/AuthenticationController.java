@@ -2,8 +2,6 @@ package br.com.suafeira.controller;
 
 import java.util.Optional;
 
-import javax.validation.Valid;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -34,7 +32,7 @@ public class AuthenticationController {
 	private CustomerRepository customerRepository;
 	
 	@PostMapping
-	public ResponseEntity<?> autenticar( @RequestBody @Valid LoginForm form) {
+	public ResponseEntity<?> autenticar( @RequestBody LoginForm form) {
 		Optional<Customer> customer = customerRepository.findByEmail(form.getEmail());		
 		if(!customer.isPresent()) {
 			return ResponseEntity.notFound().build();
