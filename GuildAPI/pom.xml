@@ -9,7 +9,7 @@
 		<relativePath />
 	</parent>
 	<groupId>br.com.feira.guild</groupId>
-	<artifactId>Guild</artifactId>
+	<artifactId>GuildAPI</artifactId>
 	<version>1.0.0</version>
 	<name>GuildAPI</name>
 	<description>Project for Spring Boot</description>
@@ -77,7 +77,7 @@
 	</dependencies>
 
 	<build>
-		<finalName>suafeira</finalName>
+		<finalName>GuildAPI</finalName>
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
