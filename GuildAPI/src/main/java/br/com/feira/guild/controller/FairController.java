@@ -1,9 +1,9 @@
 package br.com.feira.guild.controller;
 
 import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,10 +15,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.com.feira.guild.repository.FairRepository;
+import br.com.feira.guild.exceptions.EntityNotFoundException;
+import br.com.feira.guild.service.FairService;
 import br.com.feira.guild.to.Fair;
 import br.com.feira.guild.to.dto.FairDTO;
-import br.com.feira.guild.to.dto.handler.CustomerHandler;
 import br.com.feira.guild.to.form.FairForm;
 
 @RestController
@@ -26,54 +26,93 @@ import br.com.feira.guild.to.form.FairForm;
 public class FairController {
 	
 	@Autowired
-	private FairRepository fairRepository;
+	private FairService fairService;
+	
+	private static final Logger logger = LogManager.getLogger(FairController.class);
 	
 	@PostMapping
 	public ResponseEntity<?> register(@RequestBody FairForm fair) {
-		Fair fairReturn = fairRepository.save(fair.convertToFair());
-		return new ResponseEntity<>(fairReturn.getId() , HttpStatus.CREATED); 		
+		
+		logger.info("Entering registration.");
+		long initialTime = System.currentTimeMillis();
+		
+		try {
+			Fair fairReturn = fairService.save(fair);
+			return new ResponseEntity<>(fairReturn.getId() , HttpStatus.CREATED); 
+		} catch (Exception e) {
+			logger.error(e.getMessage());
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		} finally {
+			long finalTime = System.currentTimeMillis();
+			logger.info("Exiting registration in " + (finalTime - initialTime) + " s.");
+		}
+		
 	}
 	
 	@GetMapping
 	public ResponseEntity<?> findAll() {
-		List<Fair> fairs = fairRepository.findAll();
-		fairs.sort((f1, f2) -> f1.getSiteName().compareTo(f2.getSiteName()));
-		return new ResponseEntity<>(fairs , HttpStatus.OK);
+		
+		logger.info("Entering find all fairs.");
+		long initialTime = System.currentTimeMillis();
+		
+		try {
+			List<Fair> fairs = fairService.findAll();
+			
+			return new ResponseEntity<>(fairs , HttpStatus.OK);
+		} catch (Exception e) {
+			logger.error(e.getMessage());
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		} finally {
+			long finalTime = System.currentTimeMillis();
+			logger.info("Exiting find all fairs in " + (finalTime - initialTime) + " s.");
+		}
+		
 	}	
 	
 	@GetMapping(value = "/{id}")
 	public ResponseEntity<FairDTO> findFairIdCustomer(@PathVariable Integer id) {
-		if(fairRepository.findById(id).isPresent()) {			
-			Fair fair = fairRepository.findById(id).get();				
-			FairDTO fairResponse = new FairDTO(fair.getSiteName(), fair.getDescription(), fair.getAddress(),
-					fair.getCity(), fair.getUf(), fair.getDayWeek(), fair.getLatitude(), fair.getLongitude());
+		
+		logger.info("Entering find by id fair.");
+		long initialTime = System.currentTimeMillis();
+		
+		try {
+			FairDTO fairResponse = fairService.findCustomersByIdFair(id);
 			
-			Set<CustomerHandler> customers = new CustomerHandler().convert(fair.getCustomers());		
-			
-			List<CustomerHandler> convertedList = customers.stream().collect(Collectors.toList());
-			convertedList.sort((c1, c2) -> c1.getName().compareTo(c2.getName()));
-			fairResponse.setCustomers(convertedList);	
-			
-			return new ResponseEntity<FairDTO>(fairResponse, HttpStatus.OK);
-		}			
-		return new ResponseEntity<>(HttpStatus.NOT_FOUND);		
+			return new ResponseEntity<>(fairResponse , HttpStatus.OK);
+		} catch (EntityNotFoundException e) {
+			logger.error(e.getMessage());
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		} catch (Exception e) {
+			logger.error(e.getMessage());
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		} finally {
+			long finalTime = System.currentTimeMillis();
+			logger.info("Exiting find by id fair in " + (finalTime - initialTime) + " s.");
+		}
+		
 	}	
 	
 	@GetMapping(value = "/search/")
 	public ResponseEntity<?> search(@RequestParam String parameter) {
+		
+		
+		logger.info("Entering search fair.");
+		long initialTime = System.currentTimeMillis();
+		
 		try {
-		List<Fair> filterListSiteName = fairRepository.findBySiteNameIsContaining(parameter).stream().filter(fair -> fair.getSiteName().contains(parameter)).collect(Collectors.toList());		
-		if(!filterListSiteName.isEmpty()) 
-			return new ResponseEntity<>(filterListSiteName, HttpStatus.OK);
-		
-		List<Fair> filterListAddress = fairRepository.findByAddressIsContaining(parameter).stream().filter(fair -> fair.getAddress().contains(parameter)).collect(Collectors.toList());
-		if(!filterListAddress.isEmpty()) 
-			return new ResponseEntity<>(filterListAddress, HttpStatus.OK); 		
-		
+			List<Fair> fairs = fairService.search(parameter);			
+			return new ResponseEntity<>(fairs , HttpStatus.OK);
+		} catch (EntityNotFoundException e) {
+			logger.error(e.getMessage());
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.error(e.getMessage());
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		} finally {
+			long finalTime = System.currentTimeMillis();
+			logger.info("Exiting search fair in " + (finalTime - initialTime) + " s.");
 		}
-		return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		
 	}
 }
 	

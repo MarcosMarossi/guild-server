@@ -12,6 +12,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import br.com.feira.guild.repository.CustomerRepository;
+import br.com.feira.guild.service.TokenService;
 import br.com.feira.guild.to.Customer;
 
 public class AuthenticationTokenFilter extends OncePerRequestFilter {
@@ -31,7 +32,7 @@ public class AuthenticationTokenFilter extends OncePerRequestFilter {
 		
 		String token = recuerarToken(request);
 		
-		boolean valido = tokenService.isTokenValido(token);
+		boolean valido = tokenService.isValidToken(token);
 		if(valido) {
 			autenticarCliente(token);
 		}
@@ -40,7 +41,7 @@ public class AuthenticationTokenFilter extends OncePerRequestFilter {
 	}
 
 	private void autenticarCliente(String token) {
-		Integer idUsuario = tokenService.getIdUsuario(token);
+		Integer idUsuario = tokenService.getIdUser(token);
 		Customer usuario = usuarioRepository.findById(idUsuario).get();
 		UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(usuario, null, usuario.getAuthorities());
 		SecurityContextHolder.getContext().setAuthentication(authentication);

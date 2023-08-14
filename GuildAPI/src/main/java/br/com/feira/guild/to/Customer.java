@@ -66,6 +66,17 @@ public class Customer implements UserDetails {
 		this.customerPassword = customerPassword;
 	}
 	
+	public Customer(String name, String whatsapp, String email, String customerPassword,
+			Set<Product> products, Set<Fair> fairs) {
+		super();
+		this.name = name;
+		this.whatsapp = whatsapp;
+		this.email = email;
+		this.customerPassword = customerPassword;
+		this.products = products;
+		this.fairs = fairs;
+	}
+
 	@Bean
 	public PasswordEncoder encoder() {
 	    return new BCryptPasswordEncoder();

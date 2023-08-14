@@ -3,13 +3,21 @@ package br.com.feira.guild.to.dto;
 public class TokenDTO {
 	
 	private Integer id;
-	private String tipo;
+	private String type;
 	private String token;
 	
-	public TokenDTO(String token, String tipo, Integer id) {
+	public TokenDTO(String token, String type, Integer id) {
 		this.token = token;
-		this.tipo = tipo;
+		this.type = type;
 		this.id = id;
+	}
+
+	public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
 	}
 
 	public Integer getId() {
@@ -18,14 +26,6 @@ public class TokenDTO {
 
 	public void setId(Integer id) {
 		this.id = id;
-	}
-
-	public String getTipo() {
-		return tipo;
-	}
-
-	public void setTipo(String tipo) {
-		this.tipo = tipo;
 	}
 
 	public String getToken() {

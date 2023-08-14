@@ -2,9 +2,9 @@ package br.com.feira.guild.controller;
 
 import java.util.List;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,29 +13,54 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.com.feira.guild.repository.ProductRepository;
+import br.com.feira.guild.service.ProductService;
 import br.com.feira.guild.to.Product;
 import br.com.feira.guild.to.form.ProductForm;
 
 @RestController
 @RequestMapping("/products")
 public class ProductController {
-	
+		
 	@Autowired
-	private ProductRepository productRepository;
+	private ProductService productService;
+	
+	private static final Logger logger = LogManager.getLogger(ProductController.class);
 	
 	@PostMapping
-	@CacheEvict(value = "findProducts", allEntries = true)
 	public ResponseEntity<?> register(@RequestBody ProductForm productForm) {
-		productRepository.save(productForm.convertToProduct());
-		return new ResponseEntity<>(HttpStatus.CREATED); 		
+		
+		logger.info("Entering registration.");
+		long initialTime = System.currentTimeMillis();
+		
+		try {
+			productService.save(productForm);
+			return new ResponseEntity<>(HttpStatus.CREATED); 
+		} catch (Exception e) {
+			logger.error(e.getMessage());
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		} finally {
+			long finalTime = System.currentTimeMillis();
+			logger.info("Exiting registration in " + (finalTime - initialTime) + " s.");
+		}
+		
 	}
 	
 	@GetMapping
-	@Cacheable(value = "findProducts")
 	public ResponseEntity<?> findAll() {
-		List<Product> products = productRepository.findAll();
-		products.sort((p1, p2) -> p1.getName().compareTo(p2.getName()));
-		return new ResponseEntity<>(products, HttpStatus.OK);
+		
+		logger.info("Entering find all products.");
+		long initialTime = System.currentTimeMillis();
+		
+		try {
+			List<Product> products = productService.findAll();
+			return new ResponseEntity<>(products, HttpStatus.OK);
+		} catch (Exception e) {
+			logger.error(e.getMessage());
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		} finally {
+			long finalTime = System.currentTimeMillis();
+			logger.info("Exiting find all products in " + (finalTime - initialTime) + " s.");
+		}
+		
 	}
 }

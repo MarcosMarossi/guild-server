@@ -9,17 +9,7 @@ import org.springframework.data.web.config.EnableSpringDataWebSupport;
 @SpringBootApplication
 @EnableCaching
 public class Main {
-
 	public static void main(String[] args) {
-		SpringApplication.run(Main.class, args);		
-		
-		while(true) {
-			try {
-				Thread.sleep(600000);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
-		}
-	}	
-	
+		SpringApplication.run(Main.class, args);
+	}
 }
