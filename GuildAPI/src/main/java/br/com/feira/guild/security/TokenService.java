@@ -1,4 +1,4 @@
-package br.com.feira.guild.service;
+package br.com.feira.guild.security;
 
 import java.util.Date;
 
@@ -19,13 +19,16 @@ public class TokenService {
 
 	@Value("${fair.jwt.secret}")
 	private String secret;
+	
+	@Value("${fair.jwt.issuer}")
+	private String issuer;
 
 	public String generateToken(Authentication autentication) {
 		Customer customer = (Customer) autentication.getPrincipal();
 
 		Date now = new Date();
 
-		return Jwts.builder().setIssuer("Api do Fórum da Alura").setSubject(customer.getId().toString())
+		return Jwts.builder().setIssuer(issuer).setSubject(customer.getId().toString())
 				.setIssuedAt(now).setExpiration(new Date(now.getTime() + Long.parseLong(expiration)))
 				.signWith(SignatureAlgorithm.HS256, secret).compact();
 	}

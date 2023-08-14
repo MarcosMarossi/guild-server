@@ -15,8 +15,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import br.com.feira.guild.repository.CustomerRepository;
-import br.com.feira.guild.service.AuthenticationService;
-import br.com.feira.guild.service.TokenService;
 
 @EnableWebSecurity
 @Configuration

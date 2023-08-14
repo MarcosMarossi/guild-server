@@ -12,7 +12,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import br.com.feira.guild.repository.CustomerRepository;
-import br.com.feira.guild.service.TokenService;
 import br.com.feira.guild.to.Customer;
 
 public class AuthenticationTokenFilter extends OncePerRequestFilter {

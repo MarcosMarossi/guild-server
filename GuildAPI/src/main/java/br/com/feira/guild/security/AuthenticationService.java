@@ -1,4 +1,4 @@
-package br.com.feira.guild.service;
+package br.com.feira.guild.security;
 
 import java.util.Optional;
 
