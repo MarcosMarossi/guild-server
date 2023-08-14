@@ -6,12 +6,12 @@
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
 		<version>2.6.15</version>
-		<relativePath /> <!-- lookup parent from repository -->
+		<relativePath />
 	</parent>
-	<groupId>br.com.fair</groupId>
-	<artifactId>suafeira</artifactId>
+	<groupId>br.com.feira.guild</groupId>
+	<artifactId>Guild</artifactId>
 	<version>1.0.0</version>
-	<name>suafeira</name>
+	<name>GuildAPI</name>
 	<description>Project for Spring Boot</description>
 
 	<properties>
