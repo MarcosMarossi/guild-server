@@ -76,10 +76,16 @@ public class CustomerService {
 			for (Object field : fields) {
 				if (field instanceof List && ((List<?>) field).isEmpty()) {
 					throw new ValidateException("The field can't be null or empty.");
-				} else if (field == null) {
+				} 
+				if (field instanceof String && field.toString().isEmpty()) {
+					throw new ValidateException("The field can't be null or empty.");
+				} 
+				if (field == null) {
 					throw new ValidateException("The field can't be null or empty.");
 				}
 			}
+			
+			return;
 		}
 
 		throw new ValidateException("The field can't be null or empty.");
@@ -120,6 +126,7 @@ public class CustomerService {
 			}
 						
 			customer.setFairs(fairs);
+			customerRepository.save(customer);
 		} else {
 			throw new EntityNotFoundException("Customer with id " + cfForm.getCustomerId() + " not found.");
 		}	
@@ -150,13 +157,28 @@ public class CustomerService {
 		if (auxCustomer.isPresent()) {
 			Customer customer = auxCustomer.get();
 
-			if (!form.getWhatsapp().isEmpty() || form.getWhatsapp().length() >= 11) {
+			if (form.getName() != null && !form.getName().isEmpty()) {
+				customer.setName(form.getName());
+			}
+			
+			if (form.getEmail() != null && !form.getEmail().isEmpty()) {
+				customer.setEmail(form.getEmail());
+			}
+			
+			if (form.getWhatsapp() != null && !form.getWhatsapp().isEmpty()) {
 				customer.setWhatsapp(form.getWhatsapp());
 			}
-
-			if (!form.getCustomerNewPassword().isEmpty() || form.getCustomerNewPassword().length() >= 8) {
-				String registerPassword = new BCryptPasswordEncoder().encode(form.getCustomerNewPassword());
-				customer.setCustomerPassword(registerPassword);
+			
+			if (form.getCustomerNewPassword() != null && !form.getCustomerNewPassword().isEmpty()) {
+				String dbPassoword = customer.getCustomerPassword();				
+				String formPassword = new BCryptPasswordEncoder().encode(form.getPassword());
+				
+				if(dbPassoword.equals(formPassword)) {
+					String registerPassword = new BCryptPasswordEncoder().encode(form.getCustomerNewPassword());
+					customer.setCustomerPassword(registerPassword);
+				} else {
+					throw new ValidateException("The old password does not match");
+				}
 			}
 
 			customerRepository.save(customer);

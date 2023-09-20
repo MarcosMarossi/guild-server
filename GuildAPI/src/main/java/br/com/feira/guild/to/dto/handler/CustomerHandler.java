@@ -69,6 +69,6 @@ public class CustomerHandler {
 		convertedList.forEach(product -> {
 			str.append(product.getName() + ", ");
 		});
-		return str.toString().substring (0, str.length() - 2) + ".";
+		return str.toString().substring (0, str.length() - 2);
 	}
 }

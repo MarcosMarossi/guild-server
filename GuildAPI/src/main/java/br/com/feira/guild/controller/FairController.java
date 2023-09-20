@@ -92,9 +92,8 @@ public class FairController {
 		
 	}	
 	
-	@GetMapping(value = "/search/")
-	public ResponseEntity<?> search(@RequestParam String parameter) {
-		
+	@GetMapping(value = "/search")
+	public ResponseEntity<?> search(@RequestParam String parameter) {		
 		
 		logger.info("Entering search fair.");
 		long initialTime = System.currentTimeMillis();

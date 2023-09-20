@@ -1,5 +1,6 @@
 package br.com.feira.guild.service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -66,7 +67,7 @@ public class FairService {
 	}
 
 	public List<Fair> search(String parameter) {
-		List<Fair> searchList = null;
+		List<Fair> searchList = new ArrayList<>();
 		
 		searchList = fairRepository.findBySiteNameIsContaining(parameter).stream()
 				.filter(fair -> fair.getSiteName().contains(parameter)).collect(Collectors.toList());
@@ -81,8 +82,9 @@ public class FairService {
 		if (!searchList.isEmpty()) {
 			return searchList;
 		}
-
-		throw new EntityNotFoundException("Fair with parameter " + parameter + " not found");
+		
+		return searchList;
+		
 	}
 
 }
