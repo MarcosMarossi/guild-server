@@ -1,5 +1,6 @@
 package br.com.feira.guild.service;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
@@ -18,7 +19,7 @@ import br.com.feira.guild.to.Customer;
 import br.com.feira.guild.to.Fair;
 import br.com.feira.guild.to.Product;
 import br.com.feira.guild.to.dto.CustomerDTO;
-import br.com.feira.guild.to.form.CustomerFairForm;
+import br.com.feira.guild.to.form.AssociateForm;
 import br.com.feira.guild.to.form.CustomerForm;
 import br.com.feira.guild.to.form.UpdateForm;
 
@@ -76,15 +77,15 @@ public class CustomerService {
 			for (Object field : fields) {
 				if (field instanceof List && ((List<?>) field).isEmpty()) {
 					throw new ValidateException("The field can't be null or empty.");
-				} 
+				}
 				if (field instanceof String && field.toString().isEmpty()) {
 					throw new ValidateException("The field can't be null or empty.");
-				} 
+				}
 				if (field == null) {
 					throw new ValidateException("The field can't be null or empty.");
 				}
 			}
-			
+
 			return;
 		}
 
@@ -98,38 +99,52 @@ public class CustomerService {
 			Set<Product> products = customer.get().getProducts();
 
 			List<Product> ordenedList = products.stream().collect(Collectors.toList());
-			
+
 			ordenedList.sort((p1, p2) -> p1.getName().compareTo(p2.getName()));
 
 			return new CustomerDTO(customer.get().getName(), customer.get().getWhatsapp(), customer.get().getEmail(),
 					customer.get().getFairs(), ordenedList);
 		}
-		
+
 		throw new EntityNotFoundException("Customer with id " + id + " not found.");
 	}
 
-	public void addFairs(CustomerFairForm cfForm) {
-		Optional<Customer> auxCustomer = customerRepository.findById(cfForm.getCustomerId());
-		
-		if (auxCustomer.isPresent()) {
-			Customer customer = auxCustomer.get();
-			
-			Set<Fair> fairs = new TreeSet<Fair>();
-			fairs = customer.getFairs();		
-			
+	public void association(AssociateForm associateForm) {
+		Optional<Customer> auxCustomer = customerRepository.findById(associateForm.getCustomerId());
+
+		if (!auxCustomer.isPresent()) {
+			throw new EntityNotFoundException("Customer with id " + associateForm.getCustomerId() + " not found.");
+		}
+
+		Customer customer = auxCustomer.get();
+
+		if (associateForm.getIdsFair() != null && associateForm.getIdsFair().size() != 0) {
+			List<Fair> fairs = new ArrayList<Fair>();
 			List<Fair> fairList = fairService.findAll();
-			
+
 			for (Fair fair : fairList) {
-				if (cfForm.getIdsFair().stream().anyMatch(item -> item.getIdFair().equals(fair.getId()))) {
+				if (associateForm.getIdsFair().stream().anyMatch(item -> item.equals(fair.getId()))) {
 					fairs.add(fair);
 				}
 			}
-						
-			customer.setFairs(fairs);
-			customerRepository.save(customer);
-		} else {
-			throw new EntityNotFoundException("Customer with id " + cfForm.getCustomerId() + " not found.");
-		}	
+
+			customer.setFairs(new HashSet<>(fairs));
+		}
+
+		if (associateForm.getIdsProduct() != null && associateForm.getIdsProduct().size() != 0) {
+			List<Product> aux = new ArrayList<Product>();
+			List<Product> products = productService.findAll();
+
+			for (Product product : products) {
+				if (associateForm.getIdsProduct().stream().anyMatch(item -> item.equals(product.getId()))) {
+					aux.add(product);
+				}
+			}
+
+			customer.setProducts(new HashSet<Product>(aux));
+		}
+
+		customerRepository.save(customer);
 	}
 
 	public void deleteById(Integer customerId, Integer fairId) {
@@ -145,35 +160,35 @@ public class CustomerService {
 			fairs.remove(fair);
 
 			customer.setFairs(fairs);
-			customerRepository.save(customer);		
+			customerRepository.save(customer);
 		} else {
 			throw new EntityNotFoundException("Customer with id " + customerId + " not found.");
-		}		
+		}
 	}
 
 	public void update(UpdateForm form) {
 		Optional<Customer> auxCustomer = customerRepository.findByEmail(form.getEmail());
-		
+
 		if (auxCustomer.isPresent()) {
 			Customer customer = auxCustomer.get();
 
 			if (form.getName() != null && !form.getName().isEmpty()) {
 				customer.setName(form.getName());
 			}
-			
+
 			if (form.getEmail() != null && !form.getEmail().isEmpty()) {
 				customer.setEmail(form.getEmail());
 			}
-			
+
 			if (form.getWhatsapp() != null && !form.getWhatsapp().isEmpty()) {
 				customer.setWhatsapp(form.getWhatsapp());
 			}
-			
+
 			if (form.getCustomerNewPassword() != null && !form.getCustomerNewPassword().isEmpty()) {
-				String dbPassoword = customer.getCustomerPassword();				
+				String dbPassoword = customer.getCustomerPassword();
 				String formPassword = new BCryptPasswordEncoder().encode(form.getPassword());
-				
-				if(dbPassoword.equals(formPassword)) {
+
+				if (dbPassoword.equals(formPassword)) {
 					String registerPassword = new BCryptPasswordEncoder().encode(form.getCustomerNewPassword());
 					customer.setCustomerPassword(registerPassword);
 				} else {
@@ -185,6 +200,14 @@ public class CustomerService {
 		} else {
 			throw new EntityNotFoundException("Customer with e-mail " + form.getEmail() + " not found.");
 		}
+	}
+
+	public Optional<Customer> findById(Integer customerId) {
+		return customerRepository.findById(customerId);
+	}
+
+	public void save(Customer customer) {
+		customerRepository.save(customer);
 	}
 
 }

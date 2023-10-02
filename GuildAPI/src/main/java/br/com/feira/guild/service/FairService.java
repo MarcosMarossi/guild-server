@@ -44,7 +44,7 @@ public class FairService {
 		return fairRepository.save(fair.convertToFair());
 	}
 
-	public FairDTO findCustomersByIdFair(Integer id) {
+	public FairDTO findFairById(Integer id) {
 		Optional<Fair> auxFair = fairRepository.findById(id);
 
 		if (auxFair.isPresent()) {

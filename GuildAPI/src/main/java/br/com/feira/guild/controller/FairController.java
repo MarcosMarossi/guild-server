@@ -38,7 +38,7 @@ public class FairController {
 		
 		try {
 			Fair fairReturn = fairService.save(fair);
-			return new ResponseEntity<>(fairReturn.getId() , HttpStatus.CREATED); 
+			return new ResponseEntity<>(fairReturn, HttpStatus.CREATED); 
 		} catch (Exception e) {
 			logger.error(e.getMessage());
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
@@ -70,13 +70,13 @@ public class FairController {
 	}	
 	
 	@GetMapping(value = "/{id}")
-	public ResponseEntity<FairDTO> findFairIdCustomer(@PathVariable Integer id) {
+	public ResponseEntity<FairDTO> findFairById(@PathVariable Integer id) {
 		
 		logger.info("Entering find by id fair.");
 		long initialTime = System.currentTimeMillis();
 		
 		try {
-			FairDTO fairResponse = fairService.findCustomersByIdFair(id);
+			FairDTO fairResponse = fairService.findFairById(id);
 			
 			return new ResponseEntity<>(fairResponse , HttpStatus.OK);
 		} catch (EntityNotFoundException e) {

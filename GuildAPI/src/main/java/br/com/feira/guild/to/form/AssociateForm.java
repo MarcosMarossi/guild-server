@@ -2,13 +2,12 @@ package br.com.feira.guild.to.form;
 
 import java.util.List;
 
-import br.com.feira.guild.to.dto.handler.FairHandler;
-
-public class CustomerFairForm {
+public class AssociateForm {
 
 	private Integer customerId;
 	private Integer fairId;
-	private List<FairHandler> idsFair;
+	private List<Integer> idsFair;
+	private List<Integer> idsProduct;
 	
 	public Integer getCustomerId() {
 		return customerId;
@@ -16,10 +15,10 @@ public class CustomerFairForm {
 	public void setCustomerId(Integer id) {
 		this.customerId = id;
 	}
-	public List<FairHandler> getIdsFair() {
+	public List<Integer> getIdsFair() {
 		return idsFair;
 	}
-	public void setIdsFair(List<FairHandler> idsFair) {
+	public void setIdsFair(List<Integer> idsFair) {
 		this.idsFair = idsFair;
 	}
 	public Integer getFairId() {
@@ -27,5 +26,11 @@ public class CustomerFairForm {
 	}
 	public void setFairId(Integer fairId) {
 		this.fairId = fairId;
+	}
+	public List<Integer> getIdsProduct() {
+		return idsProduct;
+	}
+	public void setIdsProduct(List<Integer> idsProduct) {
+		this.idsProduct = idsProduct;
 	}
 }

@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import br.com.feira.guild.service.CustomerService;
 import br.com.feira.guild.to.dto.CustomerDTO;
-import br.com.feira.guild.to.form.CustomerFairForm;
+import br.com.feira.guild.to.form.AssociateForm;
 import br.com.feira.guild.to.form.CustomerForm;
 import br.com.feira.guild.to.form.UpdateForm;
 
@@ -31,8 +31,7 @@ public class CustomerController {
 	private static final Logger logger = LogManager.getLogger(CustomerController.class);
 
 	@PostMapping
-	public ResponseEntity<?> register(@RequestBody CustomerForm register) {
-		
+	public ResponseEntity<?> register(@RequestBody CustomerForm register) {		
 		logger.info("Entering registration.");
 		long initialTime = System.currentTimeMillis();
 
@@ -50,8 +49,7 @@ public class CustomerController {
 	}
 
 	@GetMapping(value = "/{id}")
-	public ResponseEntity<CustomerDTO> findById(@PathVariable(value = "id") Integer id) {
-		
+	public ResponseEntity<CustomerDTO> findById(@PathVariable(value = "id") Integer id) {		
 		logger.info("Entering find customer by id.");
 		long initialTime = System.currentTimeMillis();
 
@@ -65,31 +63,27 @@ public class CustomerController {
 			long finalTime = System.currentTimeMillis();
 			logger.info("Exiting find customer by id in " + (finalTime - initialTime) + " s.");
 		}
-
 	}
 
-	@PostMapping(value = "/newfair")
-	public ResponseEntity<?> addFairs(@RequestBody CustomerFairForm cfForm) {
-		
-		logger.info("Entering add fairs.");
+	@PostMapping(value = "/new-association")
+	public ResponseEntity<?> association(@RequestBody AssociateForm associateForm) {		
+		logger.info("Entering new association.");
 		long initialTime = System.currentTimeMillis();
 
 		try {
-			customerService.addFairs(cfForm);
+			customerService.association(associateForm);
 			return new ResponseEntity<>(HttpStatus.CREATED);
 		} catch (Exception e) {
 			logger.info(e.getMessage());
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		} finally {
 			long finalTime = System.currentTimeMillis();
-			logger.info("Entering add fairs in " + (finalTime - initialTime) + " s.");
+			logger.info("Exiting new association in " + (finalTime - initialTime) + " s.");
 		}
-
 	}
 
 	@DeleteMapping
-	public ResponseEntity<?> deleteById(@RequestParam Integer customerId, @RequestParam Integer fairId) {
-		
+	public ResponseEntity<?> deleteById(@RequestParam Integer customerId, @RequestParam Integer fairId) {		
 		logger.info("Entering delete fair by id.");
 		long initialTime = System.currentTimeMillis();
 		
@@ -101,14 +95,12 @@ public class CustomerController {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		} finally {
 			long finalTime = System.currentTimeMillis();
-			logger.info("Entering delete fair by id in " + (finalTime - initialTime) + " s.");
-		}
-		
+			logger.info("Exiting delete fair by id in " + (finalTime - initialTime) + " s.");
+		}		
 	}
 
 	@PatchMapping
-	public ResponseEntity<?> update(@RequestBody UpdateForm form) {
-		
+	public ResponseEntity<?> update(@RequestBody UpdateForm form) {		
 		logger.info("Entering update fair.");
 		long initialTime = System.currentTimeMillis();
 		
@@ -120,9 +112,8 @@ public class CustomerController {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		} finally {
 			long finalTime = System.currentTimeMillis();
-			logger.info("Entering update fair in " + (finalTime - initialTime) + " s.");
-		}
-		
+			logger.info("Exiting update fair in " + (finalTime - initialTime) + " s.");
+		}		
 	}
 	
 }
