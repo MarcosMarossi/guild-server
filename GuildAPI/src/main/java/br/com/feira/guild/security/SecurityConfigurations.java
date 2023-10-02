@@ -50,8 +50,8 @@ public class SecurityConfigurations {
 	@Bean
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {				
 		http.authorizeHttpRequests()
-		.requestMatchers(HttpMethod.POST, "/users").permitAll()
-		.requestMatchers(HttpMethod.GET, "/users/*").permitAll()
+		.requestMatchers(HttpMethod.POST, "/customers").permitAll()
+		.requestMatchers(HttpMethod.GET, "/customers/*").permitAll()
 		.requestMatchers(HttpMethod.POST, "/auth").permitAll()
 		.requestMatchers(HttpMethod.GET, "/fairs").permitAll()
 		.requestMatchers(HttpMethod.POST, "/fairs").permitAll()
