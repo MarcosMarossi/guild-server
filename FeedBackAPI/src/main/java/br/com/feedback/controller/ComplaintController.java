@@ -1,4 +1,4 @@
-package br.com.feira.guild.controller;
+package br.com.feedback.controller;
 
 import java.util.List;
 
@@ -13,54 +13,50 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.com.feira.guild.controller.form.ProductForm;
-import br.com.feira.guild.service.ProductService;
-import br.com.feira.guild.to.Product;
+import br.com.feedback.controller.form.CompliantForm;
+import br.com.feedback.service.ComplaintService;
+import br.com.feedback.to.Complaint;
 
 @RestController
-@RequestMapping("/products")
-public class ProductController {
-		
-	@Autowired
-	private ProductService productService;
+@RequestMapping(value = "/complaints")
+public class ComplaintController {
 	
-	private static final Logger logger = LogManager.getLogger(ProductController.class);
+	private static final Logger logger = LogManager.getLogger(AssessmentController.class);
+
+	@Autowired
+	private ComplaintService complaintService;
 	
 	@PostMapping
-	public ResponseEntity<?> register(@RequestBody ProductForm productForm) {
-		
-		logger.info("Entering registration.");
+	public ResponseEntity<?> register(@RequestBody CompliantForm register) {		
 		long initialTime = System.currentTimeMillis();
+		logger.info("Entering compliant registration.");
 		
 		try {
-			productService.save(productForm);
-			return new ResponseEntity<>(HttpStatus.CREATED); 
+			complaintService.save(register);
+			return new ResponseEntity<>(HttpStatus.CREATED);
 		} catch (Exception e) {
-			logger.error(e.getMessage());
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		} finally {
 			long finalTime = System.currentTimeMillis();
-			logger.info("Exiting registration in " + (finalTime - initialTime) + " s.");
+			logger.info("Exiting assessment registration in " + (finalTime - initialTime) + " s.");
 		}
-		
 	}
 	
 	@GetMapping
-	public ResponseEntity<?> findAll() {
-		
-		logger.info("Entering find all products.");
+	public ResponseEntity<?> findAll() {		
 		long initialTime = System.currentTimeMillis();
+		logger.info("Entering find all assessments.");
 		
 		try {
-			List<Product> products = productService.findAll();
-			return new ResponseEntity<>(products, HttpStatus.OK);
+			List<Complaint> dto = complaintService.findAll();
+			return new ResponseEntity<>(dto, HttpStatus.CREATED);
 		} catch (Exception e) {
 			logger.error(e.getMessage());
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		} finally {
 			long finalTime = System.currentTimeMillis();
-			logger.info("Exiting find all products in " + (finalTime - initialTime) + " s.");
+			logger.info("Exiting assessment registration in " + (finalTime - initialTime) + " s.");
 		}
-		
 	}
+
 }

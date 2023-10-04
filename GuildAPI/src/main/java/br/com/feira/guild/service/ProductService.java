@@ -5,9 +5,9 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import br.com.feira.guild.controller.form.ProductForm;
 import br.com.feira.guild.repository.ProductRepository;
 import br.com.feira.guild.to.Product;
-import br.com.feira.guild.to.form.ProductForm;
 
 @Service
 public class ProductService {

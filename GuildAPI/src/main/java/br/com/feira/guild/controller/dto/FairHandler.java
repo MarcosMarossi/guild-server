@@ -1,4 +1,4 @@
-package br.com.feira.guild.to.dto.handler;
+package br.com.feira.guild.controller.dto;
 
 public class FairHandler {
 	

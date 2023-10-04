@@ -12,12 +12,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import br.com.feira.guild.controller.dto.TokenDTO;
+import br.com.feira.guild.controller.form.LoginForm;
 import br.com.feira.guild.exceptions.EntityNotFoundException;
 import br.com.feira.guild.security.TokenService;
 import br.com.feira.guild.service.CustomerService;
 import br.com.feira.guild.to.Customer;
-import br.com.feira.guild.to.dto.TokenDTO;
-import br.com.feira.guild.to.form.LoginForm;
 
 @RestController
 @RequestMapping(value = "/auth")

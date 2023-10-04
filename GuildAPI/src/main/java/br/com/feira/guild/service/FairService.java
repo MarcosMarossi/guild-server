@@ -9,12 +9,12 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import br.com.feira.guild.controller.dto.CustomerHandler;
+import br.com.feira.guild.controller.dto.FairDTO;
+import br.com.feira.guild.controller.form.FairForm;
 import br.com.feira.guild.exceptions.EntityNotFoundException;
 import br.com.feira.guild.repository.FairRepository;
 import br.com.feira.guild.to.Fair;
-import br.com.feira.guild.to.dto.FairDTO;
-import br.com.feira.guild.to.dto.handler.CustomerHandler;
-import br.com.feira.guild.to.form.FairForm;
 
 @Service
 public class FairService {

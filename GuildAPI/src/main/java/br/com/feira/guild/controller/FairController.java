@@ -15,11 +15,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import br.com.feira.guild.controller.dto.FairDTO;
+import br.com.feira.guild.controller.form.FairForm;
 import br.com.feira.guild.exceptions.EntityNotFoundException;
 import br.com.feira.guild.service.FairService;
 import br.com.feira.guild.to.Fair;
-import br.com.feira.guild.to.dto.FairDTO;
-import br.com.feira.guild.to.form.FairForm;
 
 @RestController
 @RequestMapping("/fairs")

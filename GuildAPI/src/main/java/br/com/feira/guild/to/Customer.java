@@ -23,9 +23,14 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import jakarta.persistence.JoinColumn;
 
 @Entity
+@Getter @Setter
+@NoArgsConstructor
 public class Customer implements UserDetails {
 	private static final long serialVersionUID = 1L;
 	
@@ -54,17 +59,6 @@ public class Customer implements UserDetails {
 	
 	@ManyToMany(fetch = FetchType.EAGER)
 	private List<Profile> profile = new ArrayList<>();
-
-	public Customer() {
-		
-	}
-	
-	public Customer(String name, String whatsapp, String email, String customerPassword) {
-		this.name = name;
-		this.whatsapp = whatsapp;
-		this.email = email;
-		this.customerPassword = customerPassword;
-	}
 	
 	public Customer(String name, String whatsapp, String email, String customerPassword,
 			Set<Product> products, Set<Fair> fairs) {
@@ -77,74 +71,11 @@ public class Customer implements UserDetails {
 		this.fairs = fairs;
 	}
 
-	@Bean
-	public PasswordEncoder encoder() {
+    @Bean
+    public PasswordEncoder encoder() {
 	    return new BCryptPasswordEncoder();
 	}
 
-	public Integer getId() {
-		return id;
-	}
-
-	public void setId(Integer id) {
-		this.id = id;
-	}
-
-	public String getNome() {
-		return name;
-	}
-
-	public void setNome(String nome) {
-		this.name = nome;
-	}
-
-	public String getEmail() {
-		return email;
-	}
-
-	public void setEmail(String email) {
-		this.email = email;
-	}
-
-	public String getCustomerPassword() {
-		return customerPassword;
-	}
-	
-	public void setCustomerPassword(String customerPassword) {
-		this.customerPassword = customerPassword;
-	}
-	
-	public String getWhatsapp() {
-		return whatsapp;
-	}
-
-	public void setWhatsapp(String whatsapp) {
-		this.whatsapp = whatsapp;
-	}
-	
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-	
-	public Set<Product> getProducts() {
-		return products;
-	}
-	
-	public void setProducts(Set<Product> products) {
-		this.products = products;
-	}
-
-	public Set<Fair> getFairs() {
-		return fairs;
-	}
-	public void setFairs(Set<Fair> fairs) {
-		this.fairs = fairs;
-	}
-	
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 		return this.profile;

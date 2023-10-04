@@ -1,17 +1,15 @@
-package br.com.feira.guild.to.form;
+package br.com.feira.guild.controller.form;
 
 import br.com.feira.guild.to.Product;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
+@Getter @Setter
+@NoArgsConstructor
 public class ProductForm {
 	
 	private String name;
-	
-	public String getName() {
-		return name;
-	}
-	public void setName(String name) {
-		this.name = name;
-	}
 	
 	public Product convertToProduct() {
 		return new Product(name);

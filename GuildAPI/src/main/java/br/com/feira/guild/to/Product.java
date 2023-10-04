@@ -13,8 +13,13 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
+@Getter @Setter
+@NoArgsConstructor
 public class Product {
 	
 	@Id @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -30,30 +35,8 @@ public class Product {
 		inverseJoinColumns = @JoinColumn(name = "customer_id", referencedColumnName = "customer_id"))
 	private Set<Customer> customers = new HashSet<Customer>();
 	
-	public Product() {
-		
-	}
-	
 	public Product(String name) {
 		this.name = name;
 	}
 	
-	public Integer getId() {
-		return id;
-	}
-	public void setId(Integer id) {
-		this.id = id;
-	}
-	public String getName() {
-		return name;
-	}
-	public void setName(String name) {
-		this.name = name;
-	}
-	public Set<Customer> getCustomers() {
-		return customers;
-	}
-	public void setCustomers(Set<Customer> customers) {
-		this.customers = customers;
-	}
 }

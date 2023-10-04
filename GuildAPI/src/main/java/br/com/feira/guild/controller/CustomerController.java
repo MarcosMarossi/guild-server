@@ -15,11 +15,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import br.com.feira.guild.controller.dto.CustomerDTO;
+import br.com.feira.guild.controller.form.AssociateForm;
+import br.com.feira.guild.controller.form.CustomerForm;
+import br.com.feira.guild.controller.form.UpdateForm;
 import br.com.feira.guild.service.CustomerService;
-import br.com.feira.guild.to.dto.CustomerDTO;
-import br.com.feira.guild.to.form.AssociateForm;
-import br.com.feira.guild.to.form.CustomerForm;
-import br.com.feira.guild.to.form.UpdateForm;
 
 @RestController
 @RequestMapping("/customers")

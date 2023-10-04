@@ -13,8 +13,13 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
+@Getter @Setter
+@NoArgsConstructor
 public class Fair {
 	
 	@Id @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -38,10 +43,6 @@ public class Fair {
 		inverseJoinColumns = @JoinColumn(name = "customer_id", referencedColumnName = "customer_id")
 	)
 	private Set<Customer> customers = new HashSet<Customer>();
-		
-	public Fair() {
-		
-	}
 	
 	public Fair(String siteName, String description, String address, String city, String uf, String dayWeek,
 			Double latitude, Double longitude) {
@@ -52,86 +53,6 @@ public class Fair {
 		this.uf = uf;
 		this.dayWeek = dayWeek;
 		this.latitude = latitude;
-		this.longitude = longitude;
-	}
-
-	public Integer getId() {
-		return id;
-	}
-
-	public void setId(Integer id) {
-		this.id = id;
-	}
-
-	public String getSiteName() {
-		return siteName;
-	}
-
-	public void setSiteName(String siteName) {
-		this.siteName = siteName;
-	}
-
-	public String getDescription() {
-		return description;
-	}
-
-	public void setDescription(String description) {
-		this.description = description;
-	}
-
-	public String getAddress() {
-		return address;
-	}
-
-	public void setAddress(String address) {
-		this.address = address;
-	}
-
-	public String getCity() {
-		return city;
-	}
-
-	public void setCity(String city) {
-		this.city = city;
-	}
-
-	public String getUf() {
-		return uf;
-	}
-
-	public void setUf(String uf) {
-		this.uf = uf;
-	}
-	
-	public String getDayWeek() {
-		return dayWeek;
-	}
-
-	public void setDayWeek(String dayWeek) {
-		this.dayWeek = dayWeek;
-	}
-	
-	public Set<Customer> getCustomers() {
-		return customers;
-	}
-	
-	public void setCustomers(Set<Customer> customers) {
-		this.customers = customers;
-	}
-
-	public Double getLatitude() {
-		return latitude;
-	}
-
-	public void setLatitude(Double latitude) {
-		this.latitude = latitude;
-	}
-
-	public Double getLongitude() {
-		return longitude;
-	}
-
-	public void setLongitude(Double longitude) {
 		this.longitude = longitude;
 	}
 }

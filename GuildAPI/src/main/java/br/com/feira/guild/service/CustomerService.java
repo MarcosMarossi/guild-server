@@ -12,16 +12,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import br.com.feira.guild.controller.dto.CustomerDTO;
+import br.com.feira.guild.controller.form.AssociateForm;
+import br.com.feira.guild.controller.form.CustomerForm;
+import br.com.feira.guild.controller.form.UpdateForm;
 import br.com.feira.guild.exceptions.EntityNotFoundException;
 import br.com.feira.guild.exceptions.ValidateException;
 import br.com.feira.guild.repository.CustomerRepository;
 import br.com.feira.guild.to.Customer;
 import br.com.feira.guild.to.Fair;
 import br.com.feira.guild.to.Product;
-import br.com.feira.guild.to.dto.CustomerDTO;
-import br.com.feira.guild.to.form.AssociateForm;
-import br.com.feira.guild.to.form.CustomerForm;
-import br.com.feira.guild.to.form.UpdateForm;
 
 @Service
 public class CustomerService {

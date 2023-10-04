@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.com.feira.guild.to.form.MailForm;
+import br.com.feira.guild.controller.form.MailForm;
 
 @RestController
 @RequestMapping(value = "/mail")
