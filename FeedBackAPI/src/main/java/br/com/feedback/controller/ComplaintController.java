@@ -49,13 +49,13 @@ public class ComplaintController {
 		
 		try {
 			List<Complaint> dto = complaintService.findAll();
-			return new ResponseEntity<>(dto, HttpStatus.CREATED);
+			return new ResponseEntity<>(dto, HttpStatus.OK);
 		} catch (Exception e) {
 			logger.error(e.getMessage());
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		} finally {
 			long finalTime = System.currentTimeMillis();
-			logger.info("Exiting assessment registration in " + (finalTime - initialTime) + " s.");
+			logger.info("Exiting find all assessments in " + (finalTime - initialTime) + " s.");
 		}
 	}
 

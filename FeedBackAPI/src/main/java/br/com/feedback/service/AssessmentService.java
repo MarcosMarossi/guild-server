@@ -29,10 +29,25 @@ public class AssessmentService {
 
 	public List<AssessmentDTO> findAll() {
 		List<Assessment> assessments = assessmentRepository.findAll();
+		
+		List<AssessmentDTO> dtoList = convert2DTO(assessments);	
+		
+		return dtoList;
+	}
+
+	public List<AssessmentDTO> findAssessmentByFairId(Integer idFair) {
+		List<Assessment> assessments = assessmentRepository.findByIdFair(idFair);
+		
+		List<AssessmentDTO> result = convert2DTO(assessments);
+		
+		return result;
+	}
+
+	private List<AssessmentDTO> convert2DTO(List<Assessment> assessments) {
 		List<AssessmentDTO> dtoList = new ArrayList<>(); 
 		
 		for (Assessment assessment : assessments) {
-			AssessmentDTO dto = new AssessmentDTO(assessment.getComment(), assessment.getName(), assessment.getId());	
+			AssessmentDTO dto = new AssessmentDTO(assessment.getComment(), assessment.getName(), assessment.getId(), assessment.getSerialNumber());	
 			dtoList.add(dto);
 		}
 		

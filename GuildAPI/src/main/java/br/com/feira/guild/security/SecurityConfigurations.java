@@ -48,21 +48,20 @@ public class SecurityConfigurations {
 	}
 	
 	@Bean
-	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {				
-		http.authorizeHttpRequests()
-		.requestMatchers(HttpMethod.POST, "/customers").permitAll()
-		.requestMatchers(HttpMethod.GET, "/customers/*").permitAll()
-		.requestMatchers(HttpMethod.POST, "/auth").permitAll()
-		.requestMatchers(HttpMethod.GET, "/fairs").permitAll()
-		.requestMatchers(HttpMethod.POST, "/fairs").permitAll()
-		.requestMatchers(HttpMethod.GET, "/fairs/*").permitAll()
-		.requestMatchers(HttpMethod.GET, "/fairs/search/*").permitAll()
-		.requestMatchers(HttpMethod.POST, "/products").permitAll()
-		.requestMatchers(HttpMethod.GET, "/products").permitAll()
-		.anyRequest().authenticated()
-			.and().csrf().disable()
-			.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)			
-			.and().addFilterBefore(new AuthenticationTokenFilter(tokenService, usuarioRepository), UsernamePasswordAuthenticationFilter.class);
+	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+        http.authorizeHttpRequests()
+                .requestMatchers(HttpMethod.POST, "/customers").permitAll()
+                .requestMatchers(HttpMethod.GET, "/customers/*").permitAll()
+                .requestMatchers(HttpMethod.POST, "/auth").permitAll()
+                .requestMatchers(HttpMethod.GET, "/fairs").permitAll()
+                .requestMatchers(HttpMethod.POST, "/fairs").permitAll()
+                .requestMatchers(HttpMethod.GET, "/fairs/*").permitAll()
+                .requestMatchers(HttpMethod.GET, "/fairs/search/*").permitAll()
+                .requestMatchers(HttpMethod.POST, "/products").permitAll()
+                .requestMatchers(HttpMethod.GET, "/products").permitAll()
+                .anyRequest().authenticated()
+                .and().csrf(csrf -> csrf.disable())
+                .sessionManagement(management -> management.sessionCreationPolicy(SessionCreationPolicy.STATELESS)).addFilterBefore(new AuthenticationTokenFilter(tokenService, usuarioRepository), UsernamePasswordAuthenticationFilter.class);
 		
 		return http.build();
     }

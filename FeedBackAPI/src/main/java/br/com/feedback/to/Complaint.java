@@ -19,5 +19,6 @@ public class Complaint {
 	private String description;
 	private Integer idFair;
 	private String serialNumber;
+	private String manufacturer;
 	
 }

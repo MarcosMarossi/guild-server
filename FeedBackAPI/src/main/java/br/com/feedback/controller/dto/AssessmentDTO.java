@@ -13,5 +13,6 @@ public class AssessmentDTO {
 	private String comment;
 	private String name;
 	private Integer id;
+	private String serialNumber;
 
 }

@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.feedback.controller.dto.AssessmentDTO;
@@ -44,19 +45,19 @@ public class AssessmentController {
 	}
 	
 	@GetMapping
-	public ResponseEntity<?> findAll() {		
+	public ResponseEntity<?> findAssessmentByFairId(@RequestParam Integer idFair) {		
 		long initialTime = System.currentTimeMillis();
-		logger.info("Entering find all assessments.");
+		logger.info("Entering find assessments by idFair.");
 		
 		try {
-			List<AssessmentDTO> dto = assessmentService.findAll();
-			return new ResponseEntity<>(dto, HttpStatus.CREATED);
+			List<AssessmentDTO> dto = assessmentService.findAssessmentByFairId(idFair);
+			return new ResponseEntity<>(dto, HttpStatus.OK);
 		} catch (Exception e) {
 			logger.error(e.getMessage());
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		} finally {
 			long finalTime = System.currentTimeMillis();
-			logger.info("Exiting assessment registration in " + (finalTime - initialTime) + " s.");
+			logger.info("Exiting find assessments by idFair " + (finalTime - initialTime) + " s.");
 		}
 	}
 

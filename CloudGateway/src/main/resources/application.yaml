@@ -1,0 +1,22 @@
+spring:
+  application:
+    name: gateway-service
+  cloud:
+    gateway:
+      routes:
+        - id: feedback-api
+          uri: lb://feedback
+          predicates:
+            - Path=/feedback/**
+        - id: guild-api
+          uri: lb://guild
+          predicates:
+            - Path=/guild/**
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka/
+
+server:
+  port: 8000

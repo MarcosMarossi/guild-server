@@ -21,7 +21,8 @@ public class ComplaintService {
 		to.setIdFair(register.getIdFair());
 		to.setReason(register.getReason());
 		to.setSerialNumber(register.getSerialNumber());
-
+		to.setManufacturer(register.getManufacturer());
+		
 		complaintRepository.save(to);
 	}
 
