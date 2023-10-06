@@ -45,7 +45,6 @@ public class CustomerController {
 			long finalTime = System.currentTimeMillis();
 			logger.info("Exiting registration in " + (finalTime - initialTime) + " s.");
 		}
-
 	}
 
 	@GetMapping(value = "/{id}")

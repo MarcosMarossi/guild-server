@@ -19,36 +19,30 @@ public class AuthenticationTokenFilter extends OncePerRequestFilter {
 	
 	private TokenService tokenService;
 	
-	private CustomerRepository usuarioRepository;
+	private CustomerRepository customerRepository;
 	
-	public AuthenticationTokenFilter(TokenService tokenService, CustomerRepository usuarioRepository) {
+	public AuthenticationTokenFilter(TokenService tokenService, CustomerRepository customerRepository) {
 		this.tokenService = tokenService;
-		this.usuarioRepository = usuarioRepository;
+		this.customerRepository = customerRepository;
 	}
 
 	@Override
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
 			throws ServletException, IOException {
 		
-		String token = recuerarToken(request);
+		String token = getToken(request);
 		
-		boolean valido = tokenService.isValidToken(token);
-		if(valido) {
-			autenticarCliente(token);
+		if(tokenService.isValidToken(token)) {
+			Integer idCustomer = tokenService.getIdUser(token);
+			Customer customer = customerRepository.findById(idCustomer).get();
+			UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(customer, null, customer.getAuthorities());
+			SecurityContextHolder.getContext().setAuthentication(authentication);	
 		}
 		
 		filterChain.doFilter(request, response);		
 	}
 
-	private void autenticarCliente(String token) {
-		Integer idUsuario = tokenService.getIdUser(token);
-		Customer usuario = usuarioRepository.findById(idUsuario).get();
-		UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(usuario, null, usuario.getAuthorities());
-		SecurityContextHolder.getContext().setAuthentication(authentication);
-		
-	}
-
-	private String recuerarToken(HttpServletRequest request) {
+	private String getToken(HttpServletRequest request) {
 		String token = request.getHeader("Authorization");
 		if(token == null || token.isEmpty() || !token.startsWith("Bearer " )) {
 			return null;

@@ -14,6 +14,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.access.intercept.AuthorizationFilter;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import br.com.feira.guild.repository.CustomerRepository;
@@ -23,13 +24,13 @@ import br.com.feira.guild.repository.CustomerRepository;
 public class SecurityConfigurations {
 	
 	@Autowired
-	private AuthenticationService autenticacaoService;
+	private AuthenticationService authenticationService;
 	
 	@Autowired
 	private TokenService tokenService;
 	
 	@Autowired
-	private CustomerRepository usuarioRepository;
+	private CustomerRepository customerRepository;
 	
 	@Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
@@ -39,7 +40,7 @@ public class SecurityConfigurations {
 	@Bean
 	AuthenticationManager authenticationManager(AuthenticationManagerBuilder builder, PasswordEncoder encoder)
 			throws Exception {
-		return builder.userDetailsService(autenticacaoService).passwordEncoder(encoder).and().build();
+		return builder.userDetailsService(authenticationService).passwordEncoder(encoder).and().build();
 	}
 	
 	@Bean
@@ -49,19 +50,20 @@ public class SecurityConfigurations {
 	
 	@Bean
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+		RestAPIKeyFilter authenticationFilter = new RestAPIKeyFilter(authenticationService);
+		http.addFilterBefore(authenticationFilter, AuthorizationFilter.class);
+		
         http.authorizeHttpRequests()
                 .requestMatchers(HttpMethod.POST, "/customers").permitAll()
-                .requestMatchers(HttpMethod.GET, "/customers/*").permitAll()
                 .requestMatchers(HttpMethod.POST, "/auth").permitAll()
                 .requestMatchers(HttpMethod.GET, "/fairs").permitAll()
                 .requestMatchers(HttpMethod.POST, "/fairs").permitAll()
                 .requestMatchers(HttpMethod.GET, "/fairs/*").permitAll()
-                .requestMatchers(HttpMethod.GET, "/fairs/search/*").permitAll()
                 .requestMatchers(HttpMethod.POST, "/products").permitAll()
                 .requestMatchers(HttpMethod.GET, "/products").permitAll()
                 .anyRequest().authenticated()
                 .and().csrf(csrf -> csrf.disable())
-                .sessionManagement(management -> management.sessionCreationPolicy(SessionCreationPolicy.STATELESS)).addFilterBefore(new AuthenticationTokenFilter(tokenService, usuarioRepository), UsernamePasswordAuthenticationFilter.class);
+                .sessionManagement(management -> management.sessionCreationPolicy(SessionCreationPolicy.STATELESS)).addFilterBefore(new AuthenticationTokenFilter(tokenService, customerRepository), UsernamePasswordAuthenticationFilter.class);
 		
 		return http.build();
     }
