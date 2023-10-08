@@ -1,6 +1,7 @@
 package br.com.feira.guild.service;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
@@ -10,14 +11,22 @@ import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import com.twilio.Twilio;
+import com.twilio.rest.api.v2010.account.Message;
+import com.twilio.type.PhoneNumber;
 
 import br.com.feira.guild.controller.dto.CustomerDTO;
 import br.com.feira.guild.controller.form.AssociateForm;
+import br.com.feira.guild.controller.form.CodeForm;
 import br.com.feira.guild.controller.form.CustomerForm;
+import br.com.feira.guild.controller.form.RecoveryForm;
 import br.com.feira.guild.controller.form.UpdateForm;
+import br.com.feira.guild.exceptions.CustomerException;
 import br.com.feira.guild.exceptions.EntityNotFoundException;
-import br.com.feira.guild.exceptions.ValidateException;
+import br.com.feira.guild.exceptions.GenerateCodeException;
 import br.com.feira.guild.repository.CustomerRepository;
 import br.com.feira.guild.to.Customer;
 import br.com.feira.guild.to.Fair;
@@ -34,6 +43,9 @@ public class CustomerService {
 
 	@Autowired
 	private ProductService productService;
+	
+	@Autowired
+    private PasswordEncoder passwordEncoder;
 
 	public Customer findByEmail(String email) {
 		Optional<Customer> customer = customerRepository.findByEmail(email);
@@ -46,8 +58,6 @@ public class CustomerService {
 	}
 
 	public void save(CustomerForm form) {
-		validadeFields(form.getIdsFair(), form.getIdsProduct(), form.getCustomerPassword());
-
 		Set<Fair> fairs = new HashSet<Fair>();
 
 		List<Fair> fairList = fairService.findAll();
@@ -70,26 +80,6 @@ public class CustomerService {
 
 		customerRepository.save(new Customer(form.getName(), form.getWhatsapp(), form.getEmail(),
 				new BCryptPasswordEncoder().encode(form.getCustomerPassword()), products, fairs));
-	}
-
-	public void validadeFields(Object... fields) {
-		if (fields != null) {
-			for (Object field : fields) {
-				if (field instanceof List && ((List<?>) field).isEmpty()) {
-					throw new ValidateException("The field can't be null or empty.");
-				}
-				if (field instanceof String && field.toString().isEmpty()) {
-					throw new ValidateException("The field can't be null or empty.");
-				}
-				if (field == null) {
-					throw new ValidateException("The field can't be null or empty.");
-				}
-			}
-
-			return;
-		}
-
-		throw new ValidateException("The field can't be null or empty.");
 	}
 
 	public CustomerDTO findByIdWithFairAndProducts(Integer id) {
@@ -167,32 +157,16 @@ public class CustomerService {
 	}
 
 	public void update(UpdateForm form) {
-		Optional<Customer> auxCustomer = customerRepository.findByEmail(form.getEmail());
+		Optional<Customer> auxCustomer = customerRepository.findById(form.getId());
 
 		if (auxCustomer.isPresent()) {
 			Customer customer = auxCustomer.get();
 
-			if (form.getName() != null && !form.getName().isEmpty()) {
-				customer.setName(form.getName());
-			}
-
-			if (form.getEmail() != null && !form.getEmail().isEmpty()) {
-				customer.setEmail(form.getEmail());
-			}
-
-			if (form.getWhatsapp() != null && !form.getWhatsapp().isEmpty()) {
-				customer.setWhatsapp(form.getWhatsapp());
-			}
-
 			if (form.getCustomerNewPassword() != null && !form.getCustomerNewPassword().isEmpty()) {
-				String dbPassoword = customer.getCustomerPassword();
-				String formPassword = new BCryptPasswordEncoder().encode(form.getPassword());
-
-				if (dbPassoword.equals(formPassword)) {
-					String registerPassword = new BCryptPasswordEncoder().encode(form.getCustomerNewPassword());
-					customer.setCustomerPassword(registerPassword);
+				if (passwordEncoder.matches(form.getPassword(), customer.getPassword())) {
+					customer.setCustomerPassword(passwordEncoder.encode(customer.getCustomerPassword()));
 				} else {
-					throw new ValidateException("The old password does not match");
+					throw new CustomerException("Password does not match.");
 				}
 			}
 
@@ -210,4 +184,57 @@ public class CustomerService {
 		customerRepository.save(customer);
 	}
 
+	public String send(CodeForm form) {
+		Optional<Customer> optCustomer = customerRepository.findByWhatsapp(form.getRecipient());
+
+		if (optCustomer.isPresent()) {
+			Customer customer = optCustomer.get();
+			
+			if (customer.getFinalDateCode() == null || Calendar.getInstance().after(customer.getFinalDateCode())) {
+				Integer min = 100000;
+				Integer max = 999999;
+
+				Integer code = (int) Math.floor(Math.random() * (max - min + 1) + min);
+
+				Twilio.init(form.getAccountSID(), form.getAuthToken());
+
+				Message message = Message
+						.creator(new PhoneNumber(form.getSender()), new PhoneNumber(form.getRecipient()),
+								"Informe este código de verificação no seu aplicativo: " + code)
+						.create();
+
+				customer.setPhoneCode(code);
+				
+				Calendar finalDateCode = Calendar.getInstance();
+				finalDateCode.add(Calendar.MINUTE, 30);
+				customer.setFinalDateCode(finalDateCode);
+				
+				customerRepository.save(customer);
+
+				return message.getSid();
+			}
+
+			throw new GenerateCodeException(
+					"Error generating a new authentication code. A code has already been sent to your mobile phone.");
+		} else {
+			throw new EntityNotFoundException("Customer with whatsapp " + form.getRecipient() + " not found.");
+		}
+	}
+
+	public String changePassword(RecoveryForm form) {
+		Optional<Customer> optCustomer = customerRepository.findByWhatsappAndPhoneCode(form.getWhatsapp(), form.getCode());
+		
+		if (optCustomer.isPresent()) {
+			Customer customer = optCustomer.get();
+			
+			customer.setPhoneCode(null);
+			customer.setFinalDateCode(null);
+			customer.setCustomerPassword(passwordEncoder.encode(customer.getCustomerPassword()));		
+			
+			customerRepository.save(customer);
+		}
+		
+		throw new EntityNotFoundException("Customer with whatsapp " + form.getWhatsapp() + " not found.");
+	}
+	
 }

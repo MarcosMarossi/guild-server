@@ -15,5 +15,9 @@ public interface CustomerRepository extends JpaRepository<Customer, Integer> {
 	Optional<Customer> findById(Long id);
 	
 	Optional<Customer> findByName(String name);
+	
+	Optional<Customer> findByWhatsapp(String whatsapp);
+		
+	Optional<Customer> findByWhatsappAndPhoneCode(String whatsapp, Integer phoneCode);
 
 }

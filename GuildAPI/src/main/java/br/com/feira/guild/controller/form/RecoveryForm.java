@@ -6,13 +6,10 @@ import lombok.Setter;
 
 @Getter @Setter
 @NoArgsConstructor
-public class UpdateForm {
-	
-	private Integer id;
-	private String whatsapp;
-	private String email;
-	private String name;
+public class RecoveryForm {
+
 	private String password;
-	private String customerNewPassword;
+	private Integer code;
+	private String whatsapp;
 	
 }

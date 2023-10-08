@@ -6,8 +6,11 @@ import lombok.Setter;
 
 @Getter @Setter
 @NoArgsConstructor
-public class MailForm {
+public class CodeForm {
 	
-	private String email;
+	private String recipient;
+	private String sender;
+	private String accountSID;
+	private String authToken;
 	
 }

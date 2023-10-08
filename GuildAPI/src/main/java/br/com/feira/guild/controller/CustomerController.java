@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -18,6 +19,8 @@ import org.springframework.web.bind.annotation.RestController;
 import br.com.feira.guild.controller.dto.CustomerDTO;
 import br.com.feira.guild.controller.form.AssociateForm;
 import br.com.feira.guild.controller.form.CustomerForm;
+import br.com.feira.guild.controller.form.RecoveryForm;
+import br.com.feira.guild.controller.form.CodeForm;
 import br.com.feira.guild.controller.form.UpdateForm;
 import br.com.feira.guild.service.CustomerService;
 
@@ -114,5 +117,43 @@ public class CustomerController {
 			logger.info("Exiting update fair in " + (finalTime - initialTime) + " s.");
 		}		
 	}
+	
+	@PutMapping(value = "send-code")
+	public ResponseEntity<?> sendCode(@RequestBody CodeForm form) {
+		logger.info("Entering recovery user password.");
+		long initialTime = System.currentTimeMillis();
+		
+		try {
+			String uid = customerService.send(form);
+			logger.info("Message sent successfully. Id: " + uid);
+			return new ResponseEntity<>(HttpStatus.CREATED); 
+		} catch (Exception e) {
+			logger.error(e.getMessage());
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		} finally {
+			long finalTime = System.currentTimeMillis();
+			logger.info("Exiting recovery user password in " + (finalTime - initialTime) + " s.");
+		}		
+	}
+	
+	@PutMapping
+	public ResponseEntity<?> changePassword(@RequestBody RecoveryForm form) {
+		logger.info("Entering recovery user password.");
+		long initialTime = System.currentTimeMillis();
+		
+		try {
+			String uid = customerService.changePassword(form);
+			logger.info("Message sent successfully. Id: " + uid);
+			return new ResponseEntity<>(HttpStatus.CREATED); 
+		} catch (Exception e) {
+			logger.error(e.getMessage());
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		} finally {
+			long finalTime = System.currentTimeMillis();
+			logger.info("Exiting recovery user password in " + (finalTime - initialTime) + " s.");
+		}		
+	}
+	
+	
 	
 }
