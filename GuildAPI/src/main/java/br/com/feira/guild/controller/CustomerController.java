@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import br.com.feira.guild.controller.dto.CodeDTO;
 import br.com.feira.guild.controller.dto.CustomerDTO;
 import br.com.feira.guild.controller.form.AssociateForm;
 import br.com.feira.guild.controller.form.CustomerForm;
@@ -91,7 +92,7 @@ public class CustomerController {
 		
 		try {
 			customerService.deleteById(customerId, fairId);			
-			return new ResponseEntity<>(HttpStatus.OK);
+			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 		} catch (Exception e) {
 			e.printStackTrace();
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
@@ -108,7 +109,7 @@ public class CustomerController {
 		
 		try {
 			customerService.update(form);
-			return new ResponseEntity<>(HttpStatus.OK);
+			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 		} catch (Exception e) {
 			e.printStackTrace();
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
@@ -120,40 +121,38 @@ public class CustomerController {
 	
 	@PutMapping(value = "send-code")
 	public ResponseEntity<?> sendCode(@RequestBody CodeForm form) {
-		logger.info("Entering recovery user password.");
+		logger.info("Entering send code.");
 		long initialTime = System.currentTimeMillis();
 		
 		try {
-			String uid = customerService.send(form);
-			logger.info("Message sent successfully. Id: " + uid);
-			return new ResponseEntity<>(HttpStatus.CREATED); 
+			CodeDTO codeDTO = customerService.send(form);
+			logger.info("Message sent successfully. Id: " + codeDTO.getSid());
+			
+			return new ResponseEntity<>(codeDTO, HttpStatus.CREATED); 
 		} catch (Exception e) {
 			logger.error(e.getMessage());
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		} finally {
 			long finalTime = System.currentTimeMillis();
-			logger.info("Exiting recovery user password in " + (finalTime - initialTime) + " s.");
+			logger.info("Exiting send code in " + (finalTime - initialTime) + " s.");
 		}		
 	}
 	
 	@PutMapping
 	public ResponseEntity<?> changePassword(@RequestBody RecoveryForm form) {
-		logger.info("Entering recovery user password.");
+		logger.info("Entering change user password.");
 		long initialTime = System.currentTimeMillis();
 		
 		try {
-			String uid = customerService.changePassword(form);
-			logger.info("Message sent successfully. Id: " + uid);
+			customerService.changePassword(form);			
 			return new ResponseEntity<>(HttpStatus.CREATED); 
 		} catch (Exception e) {
 			logger.error(e.getMessage());
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		} finally {
 			long finalTime = System.currentTimeMillis();
-			logger.info("Exiting recovery user password in " + (finalTime - initialTime) + " s.");
+			logger.info("Exiting change user password in " + (finalTime - initialTime) + " s.");
 		}		
 	}
-	
-	
 	
 }

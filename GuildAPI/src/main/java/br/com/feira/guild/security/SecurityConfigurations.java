@@ -55,7 +55,7 @@ public class SecurityConfigurations {
 		
         http.authorizeHttpRequests()
                 .requestMatchers(HttpMethod.POST, "/customers").permitAll()
-                .requestMatchers(HttpMethod.PUT, "/customers/sendCode").permitAll()
+                .requestMatchers(HttpMethod.PUT, "/customers/send-code").permitAll()
                 .requestMatchers(HttpMethod.PUT, "/customers").permitAll()
                 .requestMatchers(HttpMethod.POST, "/auth").permitAll()
                 .requestMatchers(HttpMethod.GET, "/fairs").permitAll()

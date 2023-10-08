@@ -18,6 +18,7 @@ import com.twilio.Twilio;
 import com.twilio.rest.api.v2010.account.Message;
 import com.twilio.type.PhoneNumber;
 
+import br.com.feira.guild.controller.dto.CodeDTO;
 import br.com.feira.guild.controller.dto.CustomerDTO;
 import br.com.feira.guild.controller.form.AssociateForm;
 import br.com.feira.guild.controller.form.CodeForm;
@@ -184,7 +185,7 @@ public class CustomerService {
 		customerRepository.save(customer);
 	}
 
-	public String send(CodeForm form) {
+	public CodeDTO send(CodeForm form) {
 		Optional<Customer> optCustomer = customerRepository.findByWhatsapp(form.getRecipient());
 
 		if (optCustomer.isPresent()) {
@@ -197,9 +198,12 @@ public class CustomerService {
 				Integer code = (int) Math.floor(Math.random() * (max - min + 1) + min);
 
 				Twilio.init(form.getAccountSID(), form.getAuthToken());
+				
+				PhoneNumber phoneRecipient = new PhoneNumber("+55" + form.getRecipient());
+				PhoneNumber phoneSender = new PhoneNumber(form.getSender());
 
 				Message message = Message
-						.creator(new PhoneNumber(form.getSender()), new PhoneNumber(form.getRecipient()),
+						.creator(phoneRecipient, phoneSender,
 								"Informe este código de verificação no seu aplicativo: " + code)
 						.create();
 
@@ -211,7 +215,7 @@ public class CustomerService {
 				
 				customerRepository.save(customer);
 
-				return message.getSid();
+				return new CodeDTO(message.getSid(), finalDateCode.getTime());
 			}
 
 			throw new GenerateCodeException(
@@ -221,7 +225,7 @@ public class CustomerService {
 		}
 	}
 
-	public String changePassword(RecoveryForm form) {
+	public void changePassword(RecoveryForm form) {
 		Optional<Customer> optCustomer = customerRepository.findByWhatsappAndPhoneCode(form.getWhatsapp(), form.getCode());
 		
 		if (optCustomer.isPresent()) {
@@ -229,12 +233,12 @@ public class CustomerService {
 			
 			customer.setPhoneCode(null);
 			customer.setFinalDateCode(null);
-			customer.setCustomerPassword(passwordEncoder.encode(customer.getCustomerPassword()));		
+			customer.setCustomerPassword(passwordEncoder.encode(form.getPassword()));		
 			
 			customerRepository.save(customer);
+		} else {
+			throw new EntityNotFoundException("Customer with whatsapp " + form.getWhatsapp() + " not found.");
 		}
-		
-		throw new EntityNotFoundException("Customer with whatsapp " + form.getWhatsapp() + " not found.");
 	}
 	
 }

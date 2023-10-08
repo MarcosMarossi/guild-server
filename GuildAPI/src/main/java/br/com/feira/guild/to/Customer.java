@@ -40,7 +40,7 @@ public class Customer implements UserDetails {
 	private Integer id;
 	@Column(nullable = false)
 	private String name;
-	@Column(nullable = false)
+	@Column(nullable = false, unique = true)
 	private String whatsapp;
 	@Column(unique = true, nullable = false)
 	private String email;
