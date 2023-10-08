@@ -9,6 +9,7 @@ import lombok.Setter;
 @NoArgsConstructor
 public class ProductForm {
 	
+	private Integer id;
 	private String name;
 	
 	public Product convertToProduct() {

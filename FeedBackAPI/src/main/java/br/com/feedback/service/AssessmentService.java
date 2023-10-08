@@ -2,12 +2,14 @@ package br.com.feedback.service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import br.com.feedback.controller.dto.AssessmentDTO;
 import br.com.feedback.controller.form.AssessmentForm;
+import br.com.feedback.exceptions.EntityNotFoundException;
 import br.com.feedback.repository.AssessmentRepository;
 import br.com.feedback.to.Assessment;
 
@@ -52,6 +54,16 @@ public class AssessmentService {
 		}
 		
 		return dtoList;
+	}
+
+	public void deleteById(Integer id) {
+		Optional<Assessment> optAssessment = assessmentRepository.findById(id);
+		
+		if(optAssessment.isPresent()) {
+			assessmentRepository.deleteById(id);
+		} else {
+			throw new EntityNotFoundException("Rate with id " + id + " not found");
+		}		
 	}
 
 }

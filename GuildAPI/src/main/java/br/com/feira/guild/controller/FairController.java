@@ -7,9 +7,11 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -45,8 +47,41 @@ public class FairController {
 		} finally {
 			long finalTime = System.currentTimeMillis();
 			logger.info("Exiting registration in " + (finalTime - initialTime) + " s.");
-		}
+		}	
+	}
+	
+	@PutMapping
+	public ResponseEntity<?> update(@RequestBody FairForm fair) {		
+		logger.info("Entering update fair.");
+		long initialTime = System.currentTimeMillis();
 		
+		try {
+			fairService.update(fair);
+			return new ResponseEntity<>(HttpStatus.NO_CONTENT); 
+		} catch (Exception e) {
+			logger.error(e.getMessage());
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		} finally {
+			long finalTime = System.currentTimeMillis();
+			logger.info("Exiting update fair in " + (finalTime - initialTime) + " s.");
+		}	
+	}
+	
+	@DeleteMapping
+	public ResponseEntity<?> delete(@RequestParam Integer id) {
+		logger.info("Entering delete fair by id.");
+		long initialTime = System.currentTimeMillis();
+		
+		try {
+			fairService.delete(id);
+			return new ResponseEntity<>(HttpStatus.NO_CONTENT); 
+		} catch (Exception e) {
+			logger.error(e.getMessage());
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		} finally {
+			long finalTime = System.currentTimeMillis();
+			logger.info("Exiting delete fair by id in" + (finalTime - initialTime) + " s.");
+		}	
 	}
 	
 	@GetMapping

@@ -7,6 +7,7 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -58,6 +59,23 @@ public class AssessmentController {
 		} finally {
 			long finalTime = System.currentTimeMillis();
 			logger.info("Exiting find assessments by idFair " + (finalTime - initialTime) + " s.");
+		}
+	}
+	
+	@DeleteMapping
+	public ResponseEntity<?> deleteById(@RequestParam Integer id) {		
+		long initialTime = System.currentTimeMillis();
+		logger.info("Entering delete assessment by id.");
+		
+		try {
+			assessmentService.deleteById(id);
+			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+		} catch (Exception e) {
+			logger.error(e.getMessage());
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		} finally {
+			long finalTime = System.currentTimeMillis();
+			logger.info("Exiting delete assessment by id " + (finalTime - initialTime) + " s.");
 		}
 	}
 

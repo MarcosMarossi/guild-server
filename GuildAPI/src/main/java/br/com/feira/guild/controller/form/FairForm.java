@@ -9,6 +9,7 @@ import lombok.Setter;
 @NoArgsConstructor
 public class FairForm {
 
+	private Integer id;
 	private String siteName;
 	private String description;
 	private String address;

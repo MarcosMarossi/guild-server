@@ -87,4 +87,39 @@ public class FairService {
 		
 	}
 
+	public void update(FairForm form) {
+		Optional<Fair> auxFair = fairRepository.findById(form.getId());
+		
+		if(auxFair.isPresent()) {
+			Fair fair = auxFair.get();
+			
+			Fair updatedFair = new Fair();
+			
+			updatedFair.setLatitude(form.getLatitude() != null ? form.getLatitude() : fair.getLatitude());
+			updatedFair.setLongitude(form.getLongitude() != null ? form.getLongitude() : fair.getLongitude());
+			updatedFair.setUf(form.getUf() != null ? form.getUf() : fair.getUf());
+			updatedFair.setSiteName(form.getSiteName() != null ? form.getSiteName() : fair.getSiteName());
+			updatedFair.setDescription(form.getDescription() != null ? form.getDescription() : fair.getDescription());
+			updatedFair.setDayWeek(form.getDayWeek() != null ? form.getDayWeek() : fair.getDayWeek());
+			updatedFair.setCity(form.getCity() != null ? form.getCity() : fair.getCity());
+			updatedFair.setAddress(form.getAddress() != null ? form.getAddress() : fair.getAddress());			
+			updatedFair.setId(form.getId());
+			
+			fairRepository.save(updatedFair);
+		} else {
+			throw new EntityNotFoundException("Fair with id " + form.getId() + " not found");
+		}
+	}
+
+	public void delete(Integer id) {
+		Optional<Fair> auxFair = fairRepository.findById(id);
+		
+		if(auxFair.isPresent()) {
+			Fair fair = auxFair.get();
+			fairRepository.delete(fair);
+		} else {
+			throw new EntityNotFoundException("Fair with id " + id + " not found");
+		}
+	}
+	
 }
