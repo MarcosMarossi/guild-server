@@ -12,7 +12,7 @@
 	
 	<groupId>br.com.cloud.gateway</groupId>
 	<artifactId>CloudGateway</artifactId>
-	<version>0.0.1</version>
+	<version>1.0.0</version>
 	<name>CloudGateway</name>
 	
 	<description>Demo project for Spring Boot</description>

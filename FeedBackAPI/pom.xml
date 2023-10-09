@@ -12,7 +12,7 @@
 
 	<groupId>br.com.feedback</groupId>
 	<artifactId>FeedBackAPI</artifactId>
-	<version>0.0.1</version>
+	<version>1.0.0</version>
 	<name>FeedBackAPI</name>
 
 	<description>Demo project for Spring Boot</description>
