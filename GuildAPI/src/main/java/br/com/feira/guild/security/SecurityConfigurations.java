@@ -63,6 +63,7 @@ public class SecurityConfigurations {
                 .requestMatchers(HttpMethod.GET, "/fairs/*").permitAll()
                 .requestMatchers(HttpMethod.POST, "/products").permitAll()
                 .requestMatchers(HttpMethod.GET, "/products").permitAll()
+                .requestMatchers("/v3/api-docs/**", "/swagger-ui/**").permitAll()
                 .anyRequest().authenticated()
                 .and().csrf(csrf -> csrf.disable())
                 .sessionManagement(management -> management.sessionCreationPolicy(SessionCreationPolicy.STATELESS)).addFilterBefore(new AuthenticationTokenFilter(tokenService, customerRepository), UsernamePasswordAuthenticationFilter.class);

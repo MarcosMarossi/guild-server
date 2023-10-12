@@ -27,22 +27,26 @@ public class RestAPIKeyFilter extends OncePerRequestFilter {
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
 			throws ServletException, IOException {
 		try {
-            Authentication authentication = authenticationService.getAuthentication(request);
-            SecurityContextHolder.getContext().setAuthentication(authentication);
-        } catch (Exception exp) {
-        	logger.error(exp.getMessage());
-            
-        	HttpServletResponse httpResponse = (HttpServletResponse) response;
-            httpResponse.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-            httpResponse.setContentType(MediaType.APPLICATION_JSON_VALUE);
-            
-            PrintWriter writer = httpResponse.getWriter();
-            writer.print(exp.getMessage());
-            writer.flush();
-            writer.close();
-        }
-        
-        filterChain.doFilter(request, response);	
+			String servletPath = request.getServletPath();
+			// It's not swagger documentation
+			if (!servletPath.contains("/swagger-ui/") && !servletPath.contains("/v3/api-docs")) {
+				Authentication authentication = authenticationService.getAuthentication(request);
+				SecurityContextHolder.getContext().setAuthentication(authentication);
+			}
+		} catch (Exception exp) {
+			logger.error(exp.getMessage());
+
+			HttpServletResponse httpResponse = (HttpServletResponse) response;
+			httpResponse.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+			httpResponse.setContentType(MediaType.APPLICATION_JSON_VALUE);
+
+			PrintWriter writer = httpResponse.getWriter();
+			writer.print(exp.getMessage());
+			writer.flush();
+			writer.close();
+		}
+
+		filterChain.doFilter(request, response);
 	}
 
 }

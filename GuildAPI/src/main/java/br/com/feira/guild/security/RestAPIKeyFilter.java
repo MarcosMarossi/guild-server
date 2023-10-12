@@ -31,8 +31,13 @@ public class RestAPIKeyFilter extends OncePerRequestFilter {
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
 			throws ServletException, IOException {
 		try {
-            Authentication authentication = authenticationService.getAuthentication((HttpServletRequest) request);
-            SecurityContextHolder.getContext().setAuthentication(authentication);
+			String servletPath = request.getServletPath();
+			
+			// It's not swagger documentation
+			if(!servletPath.contains("/swagger-ui/") && !servletPath.contains("/v3/api-docs")) {
+				Authentication authentication = authenticationService.getAuthentication((HttpServletRequest) request);
+	            SecurityContextHolder.getContext().setAuthentication(authentication);
+			}
         } catch (Exception exp) {
         	logger.error(exp.getMessage());
             
