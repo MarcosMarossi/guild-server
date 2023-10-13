@@ -15,4 +15,10 @@ public class ProductForm {
 	public Product convertToProduct() {
 		return new Product(name);
 	}
+
+	public ProductForm(String name) {
+		super();
+		this.name = name;
+	}
+	
 }

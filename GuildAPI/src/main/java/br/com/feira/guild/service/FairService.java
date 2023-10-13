@@ -40,8 +40,14 @@ public class FairService {
 		return fair.get();
 	}
 
-	public Fair save(FairForm fair) {
-		return fairRepository.save(fair.convertToFair());
+	public Fair save(FairForm form) {
+		Fair fair = form.convertToFair();
+		
+		if(form.getId() != null) {
+			fair.setId(form.getId());
+		}
+		
+		return fairRepository.save(fair);
 	}
 
 	public FairDTO findFairById(Integer id) {

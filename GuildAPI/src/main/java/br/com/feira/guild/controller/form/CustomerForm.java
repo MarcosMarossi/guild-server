@@ -4,12 +4,14 @@ import java.util.List;
 
 import br.com.feira.guild.controller.dto.FairHandler;
 import br.com.feira.guild.controller.dto.ProductHandler;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter @Setter
 @NoArgsConstructor
+@AllArgsConstructor
 public class CustomerForm {
 
 	private String name;

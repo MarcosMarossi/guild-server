@@ -24,8 +24,8 @@ public class ProductService {
 		return products;
 	}
 
-	public void save(ProductForm productForm) {
-		productRepository.save(productForm.convertToProduct());
+	public Product save(ProductForm productForm) {
+		return productRepository.save(productForm.convertToProduct());
 	}
 
 	public void update(ProductForm form) {

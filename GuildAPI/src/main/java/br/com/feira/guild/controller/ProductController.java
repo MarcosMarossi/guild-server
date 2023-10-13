@@ -36,8 +36,8 @@ public class ProductController {
 		long initialTime = System.currentTimeMillis();
 		
 		try {
-			productService.save(productForm);
-			return new ResponseEntity<>(HttpStatus.CREATED); 
+			Product product = productService.save(productForm);
+			return new ResponseEntity<>(product, HttpStatus.CREATED); 
 		} catch (Exception e) {
 			logger.error(e.getMessage());
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
