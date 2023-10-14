@@ -7,17 +7,14 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import java.util.List;
 
+import org.junit.Before;
 import org.junit.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
-import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 import br.com.feira.guild.controller.form.ProductForm;
 import br.com.feira.guild.test.BaseTest;
@@ -25,15 +22,15 @@ import br.com.feira.guild.test.mount.PrepareData;
 import br.com.feira.guild.to.Product;
 
 public class ProductControllerTest extends BaseTest {
+	
+	private HttpHeaders headers;
+	
+	@Before
+	public void setup() throws Exception {
+		headers = new HttpHeaders();
+		headers.add("API_KEY", apiKey);
+	}
 
-	@Autowired
-	protected MockMvc mockMvc;
-
-	@Autowired
-	protected ObjectMapper mapper;
-
-	@Value("${fair.api.keys}")
-	protected String apiKey;
 
 	@Test
 	public void testIsUnauthorizedResquest() throws Exception {
@@ -42,19 +39,13 @@ public class ProductControllerTest extends BaseTest {
 	}
 
 	@Test
-	public void testCreateProducts() throws Exception {
-		HttpHeaders headers = new HttpHeaders();
-		headers.add("API_KEY", apiKey);
-		
+	public void testCreateProducts() throws Exception {		
 		PrepareData prepareData = new PrepareData(mockMvc, mapper, headers);
 		prepareData.createProduct(new ProductForm("Alho"));
 	}
 
 	@Test
 	public void testFindProducts() throws Exception {
-		HttpHeaders headers = new HttpHeaders();
-		headers.add("API_KEY", apiKey);
-
 		MvcResult andReturn = mockMvc
 				.perform(MockMvcRequestBuilders.get("/products").headers(headers).accept(MediaType.APPLICATION_JSON))
 				.andDo(print()).andExpect(status().isOk()).andReturn();
@@ -69,9 +60,6 @@ public class ProductControllerTest extends BaseTest {
 
 	@Test
 	public void testDeleteProducts() throws Exception {
-		HttpHeaders headers = new HttpHeaders();
-		headers.add("API_KEY", apiKey);
-
 		ProductForm form = new ProductForm();
 		form.setName("Mandioca");
 

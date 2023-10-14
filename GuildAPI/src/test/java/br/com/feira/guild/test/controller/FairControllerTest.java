@@ -9,16 +9,12 @@ import java.util.List;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
-import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 import br.com.feira.guild.controller.dto.FairDTO;
 import br.com.feira.guild.controller.form.FairForm;
@@ -27,15 +23,6 @@ import br.com.feira.guild.test.mount.PrepareData;
 import br.com.feira.guild.to.Fair;
 
 public class FairControllerTest extends BaseTest {
-
-	@Autowired
-	protected MockMvc mockMvc;
-
-	@Autowired
-	protected ObjectMapper mapper;
-
-	@Value("${fair.api.keys}")
-	protected String apiKey;
 
 	private HttpHeaders headers;
 	
@@ -59,15 +46,7 @@ public class FairControllerTest extends BaseTest {
 				23.5484524, 45.4552484);
 		
 		PrepareData prepareData = new PrepareData(mockMvc, mapper, headers);
-		prepareData.createFair(form);
-				
-		MvcResult andReturn = mockMvc
-				.perform(MockMvcRequestBuilders.post("/fairs").headers(headers).content(mapper.writeValueAsString(form))
-						.contentType(MediaType.APPLICATION_JSON))
-				.andDo(print()).andExpect(status().isCreated()).andReturn();
-		
-		String contentAsString = andReturn.getResponse().getContentAsString();
-		tmpFair = mapper.readValue(contentAsString, Fair.class);		
+		tmpFair = prepareData.createFair(form);		
 	}
 
 	@Test

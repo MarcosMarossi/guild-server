@@ -11,15 +11,10 @@ import org.junit.Before;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runners.MethodSorters;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
-import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 import br.com.feira.guild.controller.dto.CustomerDTO;
 import br.com.feira.guild.controller.dto.TokenDTO;
@@ -35,15 +30,6 @@ import jakarta.transaction.Transactional;
 
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class CustomerControllerTest extends BaseTest {
-
-	@Autowired
-	protected MockMvc mockMvc;
-
-	@Autowired
-	protected ObjectMapper mapper;
-
-	@Value("${fair.api.keys}")
-	protected String apiKey;
 
 	private HttpHeaders headers;
 
