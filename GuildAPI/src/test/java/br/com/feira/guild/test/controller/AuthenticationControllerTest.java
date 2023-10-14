@@ -7,18 +7,40 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import br.com.feira.guild.controller.dto.TokenDTO;
 import br.com.feira.guild.controller.form.LoginForm;
-import br.com.feira.guild.test.BaseTest;
 import br.com.feira.guild.test.mount.PrepareData;
 import jakarta.transaction.Transactional;
 
-public class AuthenticationControllerTest extends BaseTest {
+@RunWith(SpringRunner.class)
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK)
+@AutoConfigureMockMvc
+@ActiveProfiles("test")
+public class AuthenticationControllerTest {
+	
+	@Autowired
+	protected MockMvc mockMvc;
+
+	@Autowired
+	protected ObjectMapper mapper;
+
+	@Value("${fair.api.keys}")
+	protected String apiKey;
 
 	private HttpHeaders headers;
 

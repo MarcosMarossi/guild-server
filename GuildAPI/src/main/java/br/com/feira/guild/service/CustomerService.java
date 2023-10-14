@@ -44,9 +44,9 @@ public class CustomerService {
 
 	@Autowired
 	private ProductService productService;
-	
+
 	@Autowired
-    private PasswordEncoder passwordEncoder;
+	private PasswordEncoder passwordEncoder;
 
 	public Customer findByEmail(String email) {
 		Optional<Customer> customer = customerRepository.findByEmail(email);
@@ -170,7 +170,11 @@ public class CustomerService {
 					throw new CustomerException("Password does not match.");
 				}
 			}
-
+			
+			customer.setEmail(form.getEmail() != null && !form.getEmail().isBlank() ? form.getEmail() : customer.getEmail());
+			customer.setName(form.getName() != null && !form.getName().isBlank() ? form.getName() : customer.getName());
+			customer.setWhatsapp(form.getWhatsapp() != null && !form.getWhatsapp().isBlank() ? form.getWhatsapp() : customer.getWhatsapp());
+		
 			customerRepository.save(customer);
 		} else {
 			throw new EntityNotFoundException("Customer with e-mail " + form.getEmail() + " not found.");
@@ -190,7 +194,7 @@ public class CustomerService {
 
 		if (optCustomer.isPresent()) {
 			Customer customer = optCustomer.get();
-			
+
 			if (customer.getFinalDateCode() == null || Calendar.getInstance().after(customer.getFinalDateCode())) {
 				Integer min = 100000;
 				Integer max = 999999;
@@ -198,21 +202,19 @@ public class CustomerService {
 				Integer code = (int) Math.floor(Math.random() * (max - min + 1) + min);
 
 				Twilio.init(form.getAccountSID(), form.getAuthToken());
-				
+
 				PhoneNumber phoneRecipient = new PhoneNumber("+55" + form.getRecipient());
 				PhoneNumber phoneSender = new PhoneNumber(form.getSender());
 
-				Message message = Message
-						.creator(phoneRecipient, phoneSender,
-								"Informe este código de verificação no seu aplicativo: " + code)
-						.create();
+				Message message = Message.creator(phoneRecipient, phoneSender,
+						"Informe este código de verificação no seu aplicativo: " + code).create();
 
 				customer.setPhoneCode(code);
-				
+
 				Calendar finalDateCode = Calendar.getInstance();
 				finalDateCode.add(Calendar.MINUTE, 30);
 				customer.setFinalDateCode(finalDateCode);
-				
+
 				customerRepository.save(customer);
 
 				return new CodeDTO(message.getSid(), finalDateCode.getTime());
@@ -226,19 +228,20 @@ public class CustomerService {
 	}
 
 	public void changePassword(RecoveryForm form) {
-		Optional<Customer> optCustomer = customerRepository.findByWhatsappAndPhoneCode(form.getWhatsapp(), form.getCode());
-		
+		Optional<Customer> optCustomer = customerRepository.findByWhatsappAndPhoneCode(form.getWhatsapp(),
+				form.getCode());
+
 		if (optCustomer.isPresent()) {
 			Customer customer = optCustomer.get();
-			
+
 			customer.setPhoneCode(null);
 			customer.setFinalDateCode(null);
-			customer.setCustomerPassword(passwordEncoder.encode(form.getPassword()));		
-			
+			customer.setCustomerPassword(passwordEncoder.encode(form.getPassword()));
+
 			customerRepository.save(customer);
 		} else {
 			throw new EntityNotFoundException("Customer with whatsapp " + form.getWhatsapp() + " not found.");
 		}
 	}
-	
+
 }

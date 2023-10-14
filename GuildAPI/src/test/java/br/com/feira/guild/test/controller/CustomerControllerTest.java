@@ -10,11 +10,21 @@ import java.util.List;
 import org.junit.Before;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.junit.runners.MethodSorters;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import br.com.feira.guild.controller.dto.CustomerDTO;
 import br.com.feira.guild.controller.dto.TokenDTO;
@@ -22,14 +32,26 @@ import br.com.feira.guild.controller.form.AssociateForm;
 import br.com.feira.guild.controller.form.FairForm;
 import br.com.feira.guild.controller.form.ProductForm;
 import br.com.feira.guild.controller.form.UpdateForm;
-import br.com.feira.guild.test.BaseTest;
 import br.com.feira.guild.test.mount.PrepareData;
 import br.com.feira.guild.to.Fair;
 import br.com.feira.guild.to.Product;
 import jakarta.transaction.Transactional;
 
+@RunWith(SpringRunner.class)
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK)
+@AutoConfigureMockMvc
+@ActiveProfiles("test")
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
-public class CustomerControllerTest extends BaseTest {
+public class CustomerControllerTest {
+	
+	@Autowired
+	protected MockMvc mockMvc;
+
+	@Autowired
+	protected ObjectMapper mapper;
+
+	@Value("${fair.api.keys}")
+	protected String apiKey;
 
 	private HttpHeaders headers;
 
