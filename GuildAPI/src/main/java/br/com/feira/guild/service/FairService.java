@@ -108,7 +108,10 @@ public class FairService {
 			updatedFair.setDescription(form.getDescription() != null ? form.getDescription() : fair.getDescription());
 			updatedFair.setDayWeek(form.getDayWeek() != null ? form.getDayWeek() : fair.getDayWeek());
 			updatedFair.setCity(form.getCity() != null ? form.getCity() : fair.getCity());
-			updatedFair.setAddress(form.getAddress() != null ? form.getAddress() : fair.getAddress());			
+			updatedFair.setAddress(form.getAddress() != null ? form.getAddress() : fair.getAddress());		
+			
+			updatedFair.setCustomers(fair.getCustomers());
+			
 			updatedFair.setId(form.getId());
 			
 			fairRepository.save(updatedFair);

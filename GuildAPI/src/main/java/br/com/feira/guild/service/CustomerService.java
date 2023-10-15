@@ -171,7 +171,10 @@ public class CustomerService {
 				}
 			}
 			
-			customer.setEmail(form.getEmail() != null && !form.getEmail().isBlank() ? form.getEmail() : customer.getEmail());
+			customer.setEmail(form.getEmail() != null && !form.getEmail().isBlank() && form.getEmail().contains("@")
+					? form.getEmail()
+					: customer.getEmail());
+			
 			customer.setName(form.getName() != null && !form.getName().isBlank() ? form.getName() : customer.getName());
 			customer.setWhatsapp(form.getWhatsapp() != null && !form.getWhatsapp().isBlank() ? form.getWhatsapp() : customer.getWhatsapp());
 		
