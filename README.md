@@ -17,6 +17,8 @@ sua produção e reduzindo também os preços dos seus produtos.
 * Log4J
 * Spring Cloud Gateway
 * Mockito e JUnit
+* Amazon RDS
+* Amazon EC2
 
 ## Contribuidores
 
